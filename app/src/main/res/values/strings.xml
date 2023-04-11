@@ -2,4 +2,6 @@
     <string name="app_name">PiggerBank</string>
     <string name="open_nav">Open PiggerBank</string>
     <string name="close_nav">Close PiggerBank</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
