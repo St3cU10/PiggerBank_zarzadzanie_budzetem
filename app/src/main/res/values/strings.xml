@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PiggerBank</string>
+    <string name="open_nav">Open PiggerBank</string>
+    <string name="close_nav">Close PiggerBank</string>
+</resources>
