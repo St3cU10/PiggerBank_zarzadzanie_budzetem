@@ -1,16 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#0D2840"
     tools:context=".CeleFragment">
-    <!-- TODO: Update blank fragment layout -->
+
     <TextView
+        android:id="@+id/header_textview"
+        android:layout_width="match_parent"
+        android:layout_height="86dp"
+        android:background="#202359"
+        android:gravity="center"
+        android:text="Cele"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cele Fragment"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"
-        android:textColor="@color/black"/>
-</RelativeLayout>
+        android:text="dodaj"
+        tools:layout_editor_absoluteX="158dp"
+        tools:layout_editor_absoluteY="421dp"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/category_edittext"
+        android:layout_width="270dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="100dp"
+        android:autofillHints=""
+        android:hint="nazwa celu"
+        android:inputType="text"
+        android:textColorHint="#50D4F2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header_textview" />
+
+    <EditText
+        android:id="@+id/category_edittext2"
+        android:layout_width="270dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="176dp"
+        android:autofillHints=""
+        android:hint="podaj kwotę docelową"
+        android:inputType="text"
+        android:textColorHint="#50D4F2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header_textview" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="100dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="448dp"
+        android:background="#50D4F2"
+        android:gravity="center"
+        android:text="Twoje cele:"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header_textview"
+        tools:ignore="TextContrastCheck,TextSizeCheck" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="97dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="575dp"
+        android:layout_marginBottom="16dp"
+        android:background="#50D4F2"
+        android:text="powrót"
+        android:textColor="#1B5E20"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.887"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header_textview"
+        app:layout_constraintVertical_bias="0.0" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
