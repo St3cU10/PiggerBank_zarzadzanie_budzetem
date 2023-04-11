@@ -13,6 +13,41 @@
             android:title="Ekran Główny"/>
 
         <item
+            android:id="@+id/nav_kategorie"
+            android:icon="@drawable/baseline_category_24"
+            android:title="Kategorie"/>
+
+        <item
+            android:id="@+id/nav_skarbonka"
+            android:icon="@drawable/baseline_attach_money_24"
+            android:title="Skarbonka"/>
+
+
+        <item
+            android:id="@+id/nav_cele"
+            android:icon="@drawable/baseline_check_circle_24"
+            android:title="Cele"/>
+
+        <item
+            android:id="@+id/nav_alerty"
+            android:icon="@drawable/baseline_add_alert_24"
+            android:title="Przypomnienia"/>
+
+        <item
+            android:id="@+id/nav_motywacja"
+            android:icon="@drawable/baseline_show_chart_24"
+            android:title="Motywacja"/>
+
+        <item
+            android:id="@+id/nav_wykresy"
+            android:icon="@drawable/baseline_bar_chart_24"
+            android:title="Wykresy"/>
+
+
+
+
+
+        <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/baseline_settings_24"
             android:title="Ustawienia"/>

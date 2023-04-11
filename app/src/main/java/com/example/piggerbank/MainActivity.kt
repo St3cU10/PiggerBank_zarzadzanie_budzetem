@@ -42,10 +42,31 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         when(item.itemId){
             R.id.nav_home -> supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, HomeFragment()).commit()
+
+            R.id.nav_kategorie -> supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, KategorieFragment()).commit()
+
+            R.id.nav_skarbonka -> supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, SkarbonkaFragment()).commit()
+
+            R.id.nav_cele -> supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, CeleFragment()).commit()
+
+            R.id.nav_alerty -> supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, PrzypomnieniaFragment()).commit()
+
+            R.id.nav_motywacja -> supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, MotywacjaFragment()).commit()
+
+            R.id.nav_wykresy -> supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, WykresyFragment()).commit()
+
             R.id.nav_settings -> supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, SettingsFragment()).commit()
+
             R.id.nav_about -> supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, AboutFragment()).commit()
+
             R.id.nav_logout -> Toast.makeText(this, "Logout", Toast.LENGTH_SHORT).show()
         }
         drawerLayout.closeDrawer(GravityCompat.START)
