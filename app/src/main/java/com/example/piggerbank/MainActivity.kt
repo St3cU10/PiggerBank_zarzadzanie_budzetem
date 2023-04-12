@@ -8,15 +8,31 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.example.piggerbank.Baza.Category
+import com.example.piggerbank.Baza.MoneyDB
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
+    lateinit var categoriesList: List<String>
+
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var moneyDB: MoneyDB
+
+    private val defaultCategories = listOf(
+        Category(2, "WYDATKI", null),
+        Category(1, "PRZYCHODY", null)
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //BAZA
+        moneyDB = MoneyDB.getInstance(this)
+        defaultCategories.forEach {
+            moneyDB.moneyDao().insertCategory(it)
+        }
+        categoriesList = moneyDB.moneyDao().getCategories()
 
         drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
 
