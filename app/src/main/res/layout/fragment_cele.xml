@@ -23,8 +23,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="dodaj"
-        tools:layout_editor_absoluteX="158dp"
-        tools:layout_editor_absoluteY="421dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/category_edittext2"
+        app:layout_constraintVertical_bias="0.181"
         tools:ignore="MissingConstraints" />
 
     <EditText
@@ -59,32 +63,31 @@
         android:id="@+id/textView"
         android:layout_width="100dp"
         android:layout_height="47dp"
-        android:layout_marginTop="448dp"
+        android:layout_marginTop="396dp"
         android:background="#50D4F2"
         android:gravity="center"
         android:text="Twoje cele:"
         android:textColor="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/header_textview"
         tools:ignore="TextContrastCheck,TextSizeCheck" />
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="97dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="575dp"
-        android:layout_marginBottom="16dp"
-        android:background="#50D4F2"
-        android:text="powrót"
-        android:textColor="#1B5E20"
-        android:textSize="11sp"
+    <ImageButton
+        android:id="@+id/back_button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:background="#0D2840"
+        android:contentDescription="cofnij do ekranu start"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:src="@drawable/back_arrow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.887"
+        app:layout_constraintHorizontal_bias="0.807"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/header_textview"
-        app:layout_constraintVertical_bias="0.0" />
-
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
