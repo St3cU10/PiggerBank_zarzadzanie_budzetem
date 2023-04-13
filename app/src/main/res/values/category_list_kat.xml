@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="category_list_kat">
+        <item>Podkategoria 1</item>
+        <item>Podkategoria 2</item>
+        <item>Podkategoria 3</item>
+    </string-array>
+
+</resources>
