@@ -2,8 +2,8 @@
 <resources>
 
     <string-array name="category_list_kat">
-        <item>Podkategoria 1</item>
-        <item>Podkategoria 2</item>
+        <item>PRZYCHODY</item>
+        <item>WYDATKI</item>
         <item>Podkategoria 3</item>
     </string-array>
 
