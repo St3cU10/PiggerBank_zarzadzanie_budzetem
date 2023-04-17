@@ -16,6 +16,8 @@ import com.example.piggerbank.Baza.MoneyDB
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 
 class HomeFragment : Fragment() {
@@ -53,22 +55,25 @@ class HomeFragment : Fragment() {
 
     //DODAWANIE KWOT
         btnAdd.setOnClickListener {
-            val value : Float? = editTextKwota.text.toString().toFloat()
+            val value : String? = editTextKwota.text.toString()
             val description : String = editTextOpis.text.toString()
             val cat : String= dropmenu.text.toString()
             val catId : Int? = moneyDB.moneyDao().getId(cat)
 
-            if(value != null) {
+            if(isValue(value)) {
+                val valueDots = value!!.replace(",", ".")
+                val valueDouble = BigDecimal(valueDots).setScale(2, RoundingMode.HALF_UP).toDouble()
                 val newMoney = Money(
-                    null, value, description, catId
+                    null, valueDouble, description, catId
                 )
 
                 GlobalScope.launch(Dispatchers.IO) {
                     moneyDB.moneyDao().insertMoney(newMoney)
                 }
+                Toast.makeText(context, "Dodano: $valueDouble", Toast.LENGTH_SHORT).show()
             }
             else{
-                Toast.makeText(context, "Podaj kwote", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Podaj właściwą kwote", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -78,6 +83,21 @@ class HomeFragment : Fragment() {
 
 
         return view
+    }
+
+
+    fun isValue(value : String?) : Boolean
+    {
+        if (value == null)
+            return false
+
+        // ZAMIENIA PRZECINKI NA KROPKI
+        val valDots = value.replace(",", ".")
+
+        // SZABLON POROWNYWANIA - TYLKO CYFRY I KROPKA
+        val regex = Regex("[0-9.]+")
+
+        return regex.matches(valDots)
     }
 
 
