@@ -28,7 +28,7 @@
         android:autofillHints=""
         android:hint="Podaj kwotę"
         android:inputType="text"
-        adroid:textColor="#FFFFFF"
+        android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
