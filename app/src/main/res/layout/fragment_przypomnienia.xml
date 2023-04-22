@@ -1,16 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#0D2840"
     tools:context=".PrzypomnieniaFragment">
-    <!-- TODO: Update blank fragment layout -->
+
     <TextView
+        android:id="@+id/header_textview"
+        android:layout_width="match_parent"
+        android:layout_height="86dp"
+        android:background="#202359"
+        android:gravity="center"
+        android:text="Przypomnienia"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/category_edittext"
+        android:layout_width="270dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="100dp"
+        android:autofillHints=""
+        android:hint="wprowadź nazwę"
+        android:inputType="text"
+        android:textColorHint="#50D4F2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header_textview" />
+
+    <EditText
+        android:id="@+id/hours_edittext"
+        android:layout_width="60dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:hint="hh"
+        android:inputType="number"
+        android:textColorHint="#50D4F2"
+        app:layout_constraintEnd_toStartOf="@+id/minutes_label_textview"
+        app:layout_constraintTop_toBottomOf="@+id/category_edittext" />
+
+    <EditText
+        android:id="@+id/minutes_edittext"
+        android:layout_width="60dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="68dp"
+        android:hint="mm"
+        android:inputType="number"
+        android:textColorHint="#50D4F2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/category_edittext" />
+
+    <TextView
+        android:id="@+id/hours_label_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Przypomnienia Fragment"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"
-        android:textColor="@color/black"/>
-</RelativeLayout>
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:text="Godzina:"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/hours_edittext"
+        app:layout_constraintTop_toBottomOf="@+id/category_edittext" />
+
+    <TextView
+        android:id="@+id/minutes_label_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:text="Minuta:"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/minutes_edittext"
+        app:layout_constraintTop_toBottomOf="@+id/category_edittext" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="364dp"
+        android:text="Twoje alerty:"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header_textview" />
+
+    <ImageButton
+        android:id="@+id/back_button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="64dp"
+        android:background="#0D2840"
+        android:contentDescription="cofnij do ekranu start"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:src="@drawable/back_arrow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.807"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
