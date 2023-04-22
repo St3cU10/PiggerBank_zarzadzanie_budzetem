@@ -1,59 +1,92 @@
 package com.example.piggerbank
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Spinner
+import android.widget.Toast
+import com.example.piggerbank.Baza.Category
+import com.example.piggerbank.Baza.MoneyDB
+import com.example.piggerbank.databinding.ActivityMainBinding
+import com.example.piggerbank.databinding.FragmentKategorieBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [KategorieFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class KategorieFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var bindingCat : FragmentKategorieBinding
+    lateinit var editText: EditText
+    lateinit var dropmenu: AutoCompleteTextView
+    private lateinit var CatName : String
+    private lateinit var CatUpper : String
+    private lateinit var moneyDB: MoneyDB
+    private lateinit var categoriesList:  List<String>
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        //TUTAJ FUNKCJE LAYOUTA
+        moneyDB = MoneyDB.getInstance(MainActivity())
+        categoriesList = moneyDB.moneyDao().getCategories()
+        val view = inflater.inflate(R.layout.fragment_kategorie, container, false)
+        val btn : Button = view.findViewById(R.id.button)
+        editText = view.findViewById(R.id.category_edittext)
+
+
+        //LISTA ROZSUWANA
+        val autoComplete : AutoCompleteTextView = view.findViewById(R.id.auto_complete)
+        val adapter = ArrayAdapter(view.context, R.layout.list_category, categoriesList)
+        autoComplete.setAdapter(adapter)
+        autoComplete.onItemClickListener = AdapterView.OnItemClickListener{
+            adapterView, view, i, l ->
+            val itemSelected = adapterView.getItemAtPosition(i)
+            Toast.makeText(context, "Item: $itemSelected", Toast.LENGTH_SHORT).show()
+        }
+        dropmenu = autoComplete
+
+
+        //DODAWANIE KATEGORII
+        btn.setOnClickListener {
+            CatName = editText.text.toString()
+            CatUpper = dropmenu.text.toString()
+            val compareCat: String? = moneyDB.moneyDao().getCat(CatName)
+            if(CatName != null && compareCat == null){
+            val catUpperId = moneyDB.moneyDao().getId(CatUpper)
+
+            val newCat = Category(
+                null, CatName, catUpperId
+            )
+            GlobalScope.launch(Dispatchers.IO) {
+                moneyDB.moneyDao().insertCategory(newCat)
+            }
+
+                categoriesList = moneyDB.moneyDao().getCategories()
+        }
+            else{
+                Toast.makeText(context, "Zle dane", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_kategorie, container, false)
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment KategorieFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            KategorieFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+
+
 }

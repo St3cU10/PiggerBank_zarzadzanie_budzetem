@@ -10,7 +10,11 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.piggerbank.Baza.Category
 import com.example.piggerbank.Baza.MoneyDB
+import com.example.piggerbank.databinding.FragmentKategorieBinding
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -18,6 +22,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var moneyDB: MoneyDB
+    //private lateinit var bindingCat: FragmentKategorieBinding
+    //private lateinit var CatName: String
+    //private lateinit var CatUpper: String
+
+    //lateinit var categoryName : EditText
+    //lateinit var upperCategory : String
 
     private val defaultCategories = listOf(
         Category(2, "WYDATKI", null),
@@ -25,10 +35,32 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+       // bindingCat = FragmentKategorieBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_main)
 
+/*
+        bindingCat.button.setOnClickListener {
+            CatName = bindingCat.categoryEdittext.text.toString()
+            CatUpper = bindingCat.categoriesSpinner.toString()
+
+            if(CatName == null)
+                Toast.makeText(this, "Brak danych", Toast.LENGTH_SHORT).show()
+            else{
+                val CatUpperId : Int? = moneyDB.moneyDao().getId(CatUpper)
+                val newCat = Category(
+                    null, CatName, CatUpperId
+                )
+
+                GlobalScope.launch(Dispatchers.IO){
+                    moneyDB.moneyDao().insertCategory(newCat)
+                }
+            }
+        }
+*/
         //BAZA
+
         moneyDB = MoneyDB.getInstance(this)
+
         defaultCategories.forEach {
             moneyDB.moneyDao().insertCategory(it)
         }
@@ -51,6 +83,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .replace(R.id.fragment_container, HomeFragment()).commit()
             navigationView.setCheckedItem(R.id.nav_home)
         }
+    }
+
+    fun getMoneyDb(): MoneyDB{
+        return moneyDB
     }
 
 
