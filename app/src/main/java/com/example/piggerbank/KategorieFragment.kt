@@ -13,8 +13,12 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.piggerbank.Baza.Category
 import com.example.piggerbank.Baza.MoneyDB
+import com.example.piggerbank.RecycleView.CategoryRV
+import com.example.piggerbank.RecycleView.MyAdapterCategory
 import com.example.piggerbank.databinding.ActivityMainBinding
 import com.example.piggerbank.databinding.FragmentKategorieBinding
 import kotlinx.coroutines.Dispatchers
@@ -34,14 +38,36 @@ class KategorieFragment : Fragment() {
     private lateinit var categoriesList:  List<String>
 
 
+    private lateinit var adapter : MyAdapterCategory
+    private lateinit var recyclerView : RecyclerView
+    private lateinit var categoryArrayList : ArrayList<CategoryRV>
+
+    lateinit var categoryRVname : Array<String>
+    lateinit var categoryRVupper : Array<String>
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val view = inflater.inflate(R.layout.fragment_kategorie, container, false)
+
+        moneyDB = MoneyDB.getInstance(MainActivity())
+
+        // RECYCLER VIEW
+        categoryInitialize()
+        val layoutManager = LinearLayoutManager(context)
+        recyclerView = view.findViewById(R.id.recycler_view_category)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.setHasFixedSize(true)
+        adapter = MyAdapterCategory(categoryArrayList)
+        recyclerView.adapter = adapter
+
+
+        // STARE DZIALA
+    /*
         //TUTAJ FUNKCJE LAYOUTA
         moneyDB = MoneyDB.getInstance(MainActivity())
         categoriesList = moneyDB.moneyDao().getCategories()
-        val view = inflater.inflate(R.layout.fragment_kategorie, container, false)
         val btn : Button = view.findViewById(R.id.button)
         editText = view.findViewById(R.id.category_edittext)
 
@@ -82,11 +108,26 @@ class KategorieFragment : Fragment() {
 
 
 
-
+*/
         // Inflate the layout for this fragment
         return view
     }
 
+    private fun categoryInitialize(){
 
+        categoryArrayList = arrayListOf<CategoryRV>()
+
+        categoryRVname = moneyDB.moneyDao().getAllCategoryName()
+        categoryRVupper = moneyDB.moneyDao().getAllUpperCategory()
+
+        for (i in categoryRVname.indices)
+        {
+            val categoryData = CategoryRV(
+                categoryRVname[i],
+                categoryRVupper[i]
+            )
+            categoryArrayList.add(categoryData)
+        }
+    }
 
 }

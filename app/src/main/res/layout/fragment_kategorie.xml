@@ -7,6 +7,25 @@
     android:background="#0D2840"
     tools:context=".KategorieFragment">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_category"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/card_view_category"
+        />
+
+    <Button
+        android:id="@+id/addCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dodaj kategorie"
+        android:translationX="100dp"
+        android:translationY="-50dp"
+        app:layout_constraintBottom_toBottomOf="@+id/recycler_view_category"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintStart_toStartOf="parent" />
+<!--STARE DZIALA
     <TextView
         android:id="@+id/header_textview"
         android:layout_width="match_parent"
@@ -69,23 +88,7 @@
         tools:ignore="MissingConstraints" />
 
 
-    <!--
-    <Spinner
-        android:id="@+id/categories_spinner"
-        android:layout_width="270dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:contentDescription="@string/app_name"
-        android:entries="@array/category_list_kat"
-        android:minHeight="48dp"
-        android:text="rozwin"
-        android:textColor="#FFFFFF"
-        app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/category_edittext" />
--->
+
 
     <ImageButton
         android:id="@+id/back_button"
@@ -99,4 +102,5 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="293dp"
         tools:layout_editor_absoluteY="619dp" />
+-->
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,5 +10,6 @@ data class Money(
     @ColumnInfo val id: Int?,
     @ColumnInfo val moneyValue: Double,
     @ColumnInfo val moneyDescription: String?,
-    @ColumnInfo val moneyCategory_id: Int?
+    @ColumnInfo val moneyCategory_id: Int?,
+    @ColumnInfo val moneyDate : String
 )

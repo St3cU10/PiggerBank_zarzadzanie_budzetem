@@ -5,19 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
+import android.widget.Adapter
 import android.widget.AutoCompleteTextView
-import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
-import com.example.piggerbank.Baza.Money
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.piggerbank.Baza.MoneyDB
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.math.BigDecimal
-import java.math.RoundingMode
+
+import androidx.recyclerview.widget.RecyclerView
+import com.example.piggerbank.RecycleView.MoneyRV
+import com.example.piggerbank.RecycleView.MyAdapter
 
 
 class HomeFragment : Fragment() {
@@ -28,6 +24,16 @@ class HomeFragment : Fragment() {
     lateinit var editTextKwota: EditText
     lateinit var editTextOpis: EditText
 
+    private lateinit var adapter: MyAdapter
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var moneyArrayList : ArrayList<MoneyRV>
+
+    lateinit var moneyRVname : Array<String>
+    lateinit var moneyRVvalue : Array<Double>
+    lateinit var moneyRVcat : Array<String>
+    lateinit var moneyRVdate : Array<String>
+
+
 
 
     override fun onCreateView(
@@ -36,6 +42,23 @@ class HomeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
+        moneyDB = MoneyDB.getInstance(MainActivity())
+
+            // RECYCLER VIEW
+        moneyInitialize()
+        val layoutManager = LinearLayoutManager(context)
+        recyclerView = view.findViewById(R.id.recycler_view)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.setHasFixedSize(true)
+        adapter = MyAdapter(moneyArrayList)
+        recyclerView.adapter = adapter
+
+
+
+
+
+        // STARSZA WERSJA - DZIALA
+/*
     // FUNKCJE LAYOUTA
         moneyDB = MoneyDB.getInstance(MainActivity())
         categoriesList = moneyDB.moneyDao().getCategories()
@@ -76,7 +99,7 @@ class HomeFragment : Fragment() {
                 Toast.makeText(context, "Podaj właściwą kwote", Toast.LENGTH_SHORT).show()
             }
         }
-
+*/
 
 
 
@@ -84,6 +107,14 @@ class HomeFragment : Fragment() {
 
         return view
     }
+
+/*
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+    }
+*/
+
 
 
     fun isValue(value : String?) : Boolean
@@ -101,4 +132,29 @@ class HomeFragment : Fragment() {
     }
 
 
+
+    private fun moneyInitialize(){
+
+        moneyArrayList = arrayListOf<MoneyRV>()
+
+        moneyRVname =  moneyDB.moneyDao().getAllMoneyName()
+        moneyRVvalue = moneyDB.moneyDao().getAllMoneyValue()
+        moneyRVcat = moneyDB.moneyDao().getAllMoneyCategory()
+        moneyRVdate = moneyDB.moneyDao().getAllMoneyDate()
+
+        for (i in moneyRVname.indices)
+        {
+            val moneyData = MoneyRV(
+                moneyRVname[i],
+                moneyRVvalue[i],
+                moneyRVcat[i],
+                moneyRVdate[i]
+            )
+            moneyArrayList.add(moneyData)
+        }
+    }
+
+
 }
+
+

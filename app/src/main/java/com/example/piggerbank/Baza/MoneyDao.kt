@@ -23,7 +23,28 @@ interface MoneyDao {
     @Query("SELECT categoryName FROM Category WHERE categoryName Like :name LIMIT 1")
     fun getCat(name: String): String?
 
-    @Query("SELECT  Money.moneyValue, Money.moneyDescription, Category.categoryName" +
+    @Query("SELECT  Money.moneyValue, Money.moneyDescription, Category.categoryName, Money.moneyDate" +
             " FROM Money INNER JOIN Category ON Money.moneyCategory_id=Category.id")
     fun getMoneyAll(): List<Money>
+
+    @Query("SELECT moneyDescription FROM Money")
+    fun getAllMoneyName() : Array<String>
+
+    @Query("SELECT moneyValue FROM Money")
+    fun getAllMoneyValue() : Array<Double>
+
+    @Query("SELECT Category.categoryName FROM Money INNER JOIN Category ON Money.moneyCategory_id = Category.id")
+    fun getAllMoneyCategory() : Array<String>
+
+    @Query("SELECT moneyDate FROM Money")
+    fun getAllMoneyDate() : Array<String>
+
+    @Query("SELECT categoryName FROM Category")
+    fun getAllCategoryName() : Array<String>
+
+    @Query("SELECT b.categoryName FROM Category a LEFT JOIN Category b ON a.upperCategory = b.id")
+    fun getAllUpperCategory() : Array<String>
+
+   // @Query("SELECT SUM(moneyValue) AS suma FROM Money Where moneyCategory_id like :catnr")
+    //fun calculateSum(catnr: Int = 1): Double
 }

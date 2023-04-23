@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.piggerbank.Baza.Category
+import com.example.piggerbank.Baza.Money
 import com.example.piggerbank.Baza.MoneyDB
 import com.example.piggerbank.databinding.FragmentKategorieBinding
 import com.google.android.material.navigation.NavigationView
@@ -31,7 +32,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     private val defaultCategories = listOf(
         Category(2, "WYDATKI", null),
-        Category(1, "PRZYCHODY", null)
+        Category(1, "PRZYCHODY", null),
+
+        // KATEGORIE TESTOWE
+        Category(3, "AAA", 1),
+        Category(4, "BBB", 2),
+        Category(5, "CCC", 3)
+    )
+
+        // KASA TESTOWA
+    private val testMoney = listOf(
+        Money(1, 1000.00, "Wypłata", 1, "10-04-2023"),
+        Money(2, 21.37, "Kremówki", 2, "21-03-2023"),
+        Money(3, 4.20, "Koszenie trawy", 1, "23-04-2023")
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +77,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         defaultCategories.forEach {
             moneyDB.moneyDao().insertCategory(it)
         }
+
+        testMoney.forEach {
+            moneyDB.moneyDao().insertMoney(it)
+        }
+
         categoriesList = moneyDB.moneyDao().getCategories()
 
         drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
