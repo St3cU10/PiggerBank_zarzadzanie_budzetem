@@ -27,6 +27,9 @@ interface MoneyDao {
             " FROM Money INNER JOIN Category ON Money.moneyCategory_id=Category.id")
     fun getMoneyAll(): List<Money>
 
+    @Query("SELECT id FROM Money")
+    fun getAllMoneyId() : Array<Int>
+
     @Query("SELECT moneyDescription FROM Money")
     fun getAllMoneyName() : Array<String>
 
