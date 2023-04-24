@@ -1,5 +1,6 @@
 package com.example.piggerbank
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -68,7 +69,10 @@ class HomeFragment : Fragment() {
             override fun onItemClick(position: Int) {
 
                 val id = moneyArrayList[position].id
-                Toast.makeText(view.context, "$id", Toast.LENGTH_SHORT).show()
+                //Toast.makeText(view.context, "$id", Toast.LENGTH_SHORT).show()
+                val fragment = EditMoneyFragment(id)
+                val transaction = fragmentManager?.beginTransaction()
+                transaction?.replace(R.id.fragment_container,fragment)?.commit()
             }
 
 

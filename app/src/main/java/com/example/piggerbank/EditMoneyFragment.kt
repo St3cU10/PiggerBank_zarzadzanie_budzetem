@@ -1,59 +1,154 @@
 package com.example.piggerbank
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
+import android.widget.*
+import com.example.piggerbank.Baza.Money
+import com.example.piggerbank.Baza.MoneyDB
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.math.BigDecimal
+import java.math.RoundingMode
+import java.text.SimpleDateFormat
+import java.util.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [EditMoneyFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class EditMoneyFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class EditMoneyFragment(val moneyID : Int) : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var moneyDB: MoneyDB
+    private lateinit var categoriesList : List<String>
+
+    private lateinit var oldName : TextView
+    private lateinit var oldCategory : TextView
+    private lateinit var oldValue : TextView
+    private lateinit var oldDate : TextView
+
+    private lateinit var newNameEditText : EditText
+    private lateinit var newCatDropMenu: AutoCompleteTextView
+    private lateinit var newValueEditText: EditText
+    private lateinit var newDataTextView: TextView
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val view = inflater.inflate(R.layout.fragment_edit_money, container, false)
+        moneyDB = MoneyDB.getInstance(MainActivity())
+
+        val prevBtn : ImageButton = view.findViewById(R.id.back_button)
+        prevBtn.setOnClickListener{
+            val fragment = HomeFragment()
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(R.id.fragment_container,fragment)?.commit()
+        }
+
+        categoriesList = moneyDB.moneyDao().getCategories()
+        val btnAdd : Button = view.findViewById(R.id.button2)
+        val buttonDate : Button = view.findViewById(R.id.buttonDate)
+
+
+        oldName = view.findViewById(R.id.oldName)
+        oldCategory = view.findViewById(R.id.oldCat)
+        oldValue = view.findViewById(R.id.oldValue)
+        oldDate = view.findViewById(R.id.oldDate)
+
+        oldName.text = moneyDB.moneyDao().getOneMoneyDescription(moneyID)
+        oldCategory.text = moneyDB.moneyDao().getOneMoneyCategory(moneyID)
+        oldValue.text = moneyDB.moneyDao().getOneMoneyValue(moneyID).toString()
+        oldDate.text = moneyDB.moneyDao().getOneMoneyDate(moneyID)
+
+        newNameEditText = view.findViewById(R.id.newName)
+        newValueEditText = view.findViewById(R.id.newValue)
+        newDataTextView = view.findViewById(R.id.newDate)
+
+        // LISTA ROZSUWANA
+        val autoComplete : AutoCompleteTextView = view.findViewById(R.id.newCat)
+        val adapter = ArrayAdapter(view.context, R.layout.list_category, categoriesList)
+        autoComplete.setAdapter(adapter)
+        autoComplete.onItemClickListener = AdapterView.OnItemClickListener{
+                adapterView, view, i, l ->
+            val itemSelected = adapterView.getItemAtPosition(i)
+        }
+        newCatDropMenu = autoComplete
+
+        // KALENDARZ
+        val calendarBox = Calendar.getInstance()
+        val dateBox = DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
+            calendarBox.set(Calendar.YEAR, year)
+            calendarBox.set(Calendar.MONTH, month)
+            calendarBox.set(Calendar.DAY_OF_MONTH, day)
+
+            updateText(calendarBox)
+        }
+        //otwieranie kalendarza
+        buttonDate.setOnClickListener{
+            DatePickerDialog(view.context, dateBox, calendarBox.get(Calendar.YEAR), calendarBox.get(
+                Calendar.MONTH), calendarBox.get(Calendar.DAY_OF_MONTH)).show()
+        }
+
+        btnAdd.setOnClickListener {
+            val name : String? = newNameEditText.text.toString()
+            val value : String? = newValueEditText.text.toString()
+            val cat : String? = newCatDropMenu.text.toString()
+            val catId : Int? = moneyDB.moneyDao().getId(cat)
+            val date : String = newDataTextView.text.toString()
+
+            if(isValue(value) && name != null && catId != null && date != "Wybierz datę:") {
+                val valueDots = value!!.replace(",", ".")
+                val valueDouble = BigDecimal(valueDots).setScale(2, RoundingMode.HALF_UP).toDouble()
+
+
+                GlobalScope.launch(Dispatchers.IO) {
+                    moneyDB.moneyDao().updateMoney(name, valueDouble, catId, date, moneyID)
+                }
+                Toast.makeText(context, "Zedytowano: $name", Toast.LENGTH_SHORT).show()
+                val fragment = HomeFragment()
+                val transaction = fragmentManager?.beginTransaction()
+                transaction?.replace(R.id.fragment_container,fragment)?.commit()
+            }
+            else{
+                Toast.makeText(context, "Podaj właściwe dane", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_money, container, false)
+        return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment EditMoneyFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            EditMoneyFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+
+    private fun updateText(calendar: Calendar){
+        val dateFormat = "dd-MM-yyyy"
+        val simple = SimpleDateFormat(dateFormat, Locale.UK)
+        newDataTextView.setText(simple.format(calendar.time))
+
+        /*val today = Calendar.getInstance()
+        println(SimpleDateFormat().format(today.time))
+        println(SimpleDateFormat("dd-MM-yyyy").format(Locale.UK))*/
     }
+
+    fun isValue(value : String?) : Boolean
+    {
+        if (value == null)
+            return false
+
+        // ZAMIENIA PRZECINKI NA KROPKI
+        val valDots = value.replace(",", ".")
+
+        // SZABLON POROWNYWANIA - TYLKO CYFRY I KROPKA
+        val regex = Regex("[0-9.]+")
+
+        return regex.matches(valDots)
+    }
+
+
 }
