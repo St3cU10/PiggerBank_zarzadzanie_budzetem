@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import androidx.fragment.app.Fragment
 
 
@@ -37,9 +38,15 @@ class PrzypomnieniaFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_przypomnienia, container, false)
+        val view = inflater.inflate(R.layout.fragment_przypomnienia, container, false)
 
+        val prevBtn : ImageButton = view.findViewById(R.id.back_button2)
+        prevBtn.setOnClickListener{
+            val fragment = KategorieFragment()
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(R.id.fragment_container,fragment)?.commit()
+        }
+        return view
     }
 
     companion object {
