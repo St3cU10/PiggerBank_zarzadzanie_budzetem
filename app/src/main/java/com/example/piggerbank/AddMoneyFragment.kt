@@ -114,6 +114,7 @@ class AddMoneyFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_add_money, container, false)
 
+
         val prevBtn : ImageButton = view.findViewById(R.id.back_button)
         prevBtn.setOnClickListener{
             val fragment = HomeFragment()

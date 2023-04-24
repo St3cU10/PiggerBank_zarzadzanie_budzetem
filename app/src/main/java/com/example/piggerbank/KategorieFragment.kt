@@ -51,6 +51,13 @@ class KategorieFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_kategorie, container, false)
 
+        val nextBtn : Button = view.findViewById(R.id.addCategory)
+        nextBtn.setOnClickListener{
+            val fragment = AddCategoryFragment()
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(R.id.fragment_container,fragment)?.commit()
+        }
+
         moneyDB = MoneyDB.getInstance(MainActivity())
 
         // RECYCLER VIEW
