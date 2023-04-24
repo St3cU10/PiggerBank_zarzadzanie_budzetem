@@ -9,6 +9,7 @@ import android.widget.Adapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.piggerbank.Baza.MoneyDB
 
@@ -29,6 +30,7 @@ class HomeFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var moneyArrayList : ArrayList<MoneyRV>
 
+    lateinit var moneyRVid : Array<Int>
     lateinit var moneyRVname : Array<String>
     lateinit var moneyRVvalue : Array<Double>
     lateinit var moneyRVcat : Array<String>
@@ -60,6 +62,19 @@ class HomeFragment : Fragment() {
         recyclerView.setHasFixedSize(true)
         adapter = MyAdapter(moneyArrayList)
         recyclerView.adapter = adapter
+
+
+        adapter.setOnItemCLickListener(object : MyAdapter.onItemClickListener{
+            override fun onItemClick(position: Int) {
+
+                val id = moneyArrayList[position].id
+                Toast.makeText(view.context, "$id", Toast.LENGTH_SHORT).show()
+            }
+
+
+        })
+
+
 
 
 
@@ -125,6 +140,7 @@ class HomeFragment : Fragment() {
 
 
 
+
     fun isValue(value : String?) : Boolean
     {
         if (value == null)
@@ -145,6 +161,7 @@ class HomeFragment : Fragment() {
 
         moneyArrayList = arrayListOf<MoneyRV>()
 
+        moneyRVid = moneyDB.moneyDao().getAllMoneyId()
         moneyRVname =  moneyDB.moneyDao().getAllMoneyName()
         moneyRVvalue = moneyDB.moneyDao().getAllMoneyValue()
         moneyRVcat = moneyDB.moneyDao().getAllMoneyCategory()
@@ -153,6 +170,7 @@ class HomeFragment : Fragment() {
         for (i in moneyRVname.indices)
         {
             val moneyData = MoneyRV(
+                moneyRVid[i],
                 moneyRVname[i],
                 moneyRVvalue[i],
                 moneyRVcat[i],
@@ -160,6 +178,8 @@ class HomeFragment : Fragment() {
             )
             moneyArrayList.add(moneyData)
         }
+
+
     }
 
 
