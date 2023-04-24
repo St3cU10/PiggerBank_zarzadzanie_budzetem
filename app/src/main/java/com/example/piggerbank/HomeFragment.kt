@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Adapter
 import android.widget.AutoCompleteTextView
+import android.widget.Button
 import android.widget.EditText
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.piggerbank.Baza.MoneyDB
@@ -41,6 +42,13 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+
+        val nextBtn : Button = view.findViewById(R.id.addMoney)
+        nextBtn.setOnClickListener{
+            val fragment = AddMoneyFragment()
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(R.id.fragment_container,fragment)?.commit()
+        }
 
         moneyDB = MoneyDB.getInstance(MainActivity())
 
