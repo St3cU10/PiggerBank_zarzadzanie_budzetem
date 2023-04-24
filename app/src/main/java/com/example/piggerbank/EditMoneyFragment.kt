@@ -49,6 +49,9 @@ class EditMoneyFragment(val moneyID : Int) : Fragment() {
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.fragment_container,fragment)?.commit()
         }
+        //usuwanie danych z layoutu
+        val DeleteButoon : ImageButton = view.findViewById(R.id.delete_button)
+        DeleteButoon.setOnClickListener{}
 
         categoriesList = moneyDB.moneyDao().getCategories()
         val btnAdd : Button = view.findViewById(R.id.button2)
