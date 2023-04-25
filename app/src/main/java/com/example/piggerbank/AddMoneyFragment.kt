@@ -188,6 +188,9 @@ class AddMoneyFragment : Fragment() {
                     moneyDB.moneyDao().insertMoney(newMoney)
                 }
                 Toast.makeText(context, "Dodano: $description", Toast.LENGTH_SHORT).show()
+                val fragment = HomeFragment()
+                val transaction = fragmentManager?.beginTransaction()
+                transaction?.replace(R.id.fragment_container,fragment)?.commit()
             }
             else{
                 Toast.makeText(context, "Podaj właściwą kwote", Toast.LENGTH_SHORT).show()

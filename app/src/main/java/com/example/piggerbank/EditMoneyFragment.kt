@@ -49,9 +49,16 @@ class EditMoneyFragment(val moneyID : Int) : Fragment() {
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.fragment_container,fragment)?.commit()
         }
-        //usuwanie danych z layoutu
+
+        // USUWANIE
         val DeleteButoon : ImageButton = view.findViewById(R.id.delete_button)
-        DeleteButoon.setOnClickListener{}
+        DeleteButoon.setOnClickListener{
+            moneyDB.moneyDao().deleteOneMoney(moneyID)
+            val fragment = HomeFragment()
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(R.id.fragment_container,fragment)?.commit()
+
+        }
 
         categoriesList = moneyDB.moneyDao().getCategories()
         val btnAdd : Button = view.findViewById(R.id.button2)
@@ -71,6 +78,11 @@ class EditMoneyFragment(val moneyID : Int) : Fragment() {
         newNameEditText = view.findViewById(R.id.newName)
         newValueEditText = view.findViewById(R.id.newValue)
         newDataTextView = view.findViewById(R.id.newDate)
+        newDataTextView.text = oldDate.text.toString()
+
+        newNameEditText.setText(oldName.text)
+        newValueEditText.setText(oldValue.text)
+
 
         // LISTA ROZSUWANA
         val autoComplete : AutoCompleteTextView = view.findViewById(R.id.newCat)
@@ -82,6 +94,7 @@ class EditMoneyFragment(val moneyID : Int) : Fragment() {
         }
         newCatDropMenu = autoComplete
 
+        newCatDropMenu.setText(oldCategory.text.toString())
         // KALENDARZ
         val calendarBox = Calendar.getInstance()
         val dateBox = DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->

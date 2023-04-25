@@ -42,6 +42,9 @@ interface MoneyDao {
     @Query("SELECT moneyDate FROM Money")
     fun getAllMoneyDate() : Array<String>
 
+    @Query("SELECT id FROM Category")
+    fun getAllCategoryId() : Array<Int>
+
     @Query("SELECT categoryName FROM Category")
     fun getAllCategoryName() : Array<String>
 
@@ -57,17 +60,29 @@ interface MoneyDao {
             "Money.moneyCategory_id = Category.id WHERE Money.id LIKE :monId")
     fun getOneMoneyCategory(monId: Int) : String
 
+    @Query("SELECT moneyCategory_id FROM Money WHERE id LIKE :monId")
+    fun getOneMoneyCatId(monId: Int) : Int
+
     @Query("SELECT moneyValue FROM Money WHERE id LIKE :monId")
     fun getOneMoneyValue(monId : Int) : Double
 
     @Query("SELECT moneyDate FROM Money WHERE id LIKE :monId")
     fun getOneMoneyDate(monId : Int) : String
 
+    @Query("SELECT categoryName FROM Category WHERE id LIKE :catId")
+    fun getOneCatName(catId : Int) : String
 
+    //EDYCJA
     @Query("UPDATE Money SET moneyDescription=:newName, moneyValue=:newValue, moneyCategory_id=:newCat," +
             "moneyDate=:newDate WHERE id LIKE :monId")
     fun updateMoney(newName : String, newValue : Double, newCat : Int?,
     newDate : String, monId : Int)
+
+    @Query("UPDATE Category SET categoryName=:newName WHERE id LIKE :catId")
+    fun updateCategory(newName: String, catId: Int)
+
+    @Query("DELETE FROM Money WHERE id LIKE :monId")
+    fun deleteOneMoney(monId: Int)
 
    // @Query("SELECT SUM(moneyValue) AS suma FROM Money Where moneyCategory_id like :catnr")
     //fun calculateSum(catnr: Int = 1): Double

@@ -44,6 +44,7 @@ class KategorieFragment : Fragment() {
 
     lateinit var categoryRVname : Array<String>
     lateinit var categoryRVupper : Array<String>
+    lateinit var categoryRVid : Array<Int>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,6 +69,18 @@ class KategorieFragment : Fragment() {
         recyclerView.setHasFixedSize(true)
         adapter = MyAdapterCategory(categoryArrayList)
         recyclerView.adapter = adapter
+
+
+        //PRZECHODZENIE DO EDYCJI
+        adapter.setOnItemClickListener(object : MyAdapterCategory.onItemClickListener{
+            override fun onItemClick(position: Int) {
+                val id = categoryArrayList[position].id
+                val fragment = edit_category(id)
+                val transaction = fragmentManager?.beginTransaction()
+                transaction?.replace(R.id.fragment_container,fragment)?.commit()
+            }
+        })
+
 
 
         // STARE DZIALA
@@ -124,12 +137,14 @@ class KategorieFragment : Fragment() {
 
         categoryArrayList = arrayListOf<CategoryRV>()
 
+        categoryRVid = moneyDB.moneyDao().getAllCategoryId()
         categoryRVname = moneyDB.moneyDao().getAllCategoryName()
         categoryRVupper = moneyDB.moneyDao().getAllUpperCategory()
 
         for (i in categoryRVname.indices)
         {
             val categoryData = CategoryRV(
+                categoryRVid[i],
                 categoryRVname[i],
                 categoryRVupper[i]
             )

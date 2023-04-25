@@ -5,31 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
+import android.widget.*
+import com.example.piggerbank.Baza.Category
+import com.example.piggerbank.Baza.MoneyDB
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [AddCategoryFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AddCategoryFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var moneyDB: MoneyDB
+    private lateinit var categoriesList: List<String>
+    lateinit var dropmenu: AutoCompleteTextView
+    lateinit var editTextCatName: EditText
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,32 +26,60 @@ class AddCategoryFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_add_category, container, false)
 
+        moneyDB = MoneyDB.getInstance(MainActivity())
+        categoriesList = moneyDB.moneyDao().getCategories()
+
+        editTextCatName = view.findViewById(R.id.category_edittext)
+
+        // LISTA ROZSUWANA
+        val autoComplete : AutoCompleteTextView = view.findViewById(R.id.auto_complete)
+        val adapter = ArrayAdapter(view.context, R.layout.list_category, categoriesList)
+        autoComplete.setAdapter(adapter)
+        autoComplete.onItemClickListener = AdapterView.OnItemClickListener{
+                adapterView, view, i, l ->
+            val itemSelected = adapterView.getItemAtPosition(i)
+        }
+        dropmenu = autoComplete
+
+        val btnAdd : Button = view.findViewById(R.id.button)
+
+        btnAdd.setOnClickListener {
+            val CatName = editTextCatName.text.toString()
+            val CatUpper = dropmenu.text.toString()
+            val compareCat: String? = moneyDB.moneyDao().getCat(CatName)
+            if(CatName != null && compareCat == null){
+                val catUpperId = moneyDB.moneyDao().getId(CatUpper)
+
+                val newCat = Category(
+                    null, CatName, catUpperId
+                )
+                GlobalScope.launch(Dispatchers.IO) {
+                    moneyDB.moneyDao().insertCategory(newCat)
+                }
+
+                categoriesList = moneyDB.moneyDao().getCategories()
+
+                val fragment = KategorieFragment()
+                val transaction = fragmentManager?.beginTransaction()
+                transaction?.replace(R.id.fragment_container,fragment)?.commit()
+            }
+            else{
+                Toast.makeText(context, "Zle dane", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+            // BACK BUTTON
         val prevBtn : ImageButton = view.findViewById(R.id.back_button)
         prevBtn.setOnClickListener{
             val fragment = KategorieFragment()
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.fragment_container,fragment)?.commit()
         }
+
+
         return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AddCategoryFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AddCategoryFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+
 }
