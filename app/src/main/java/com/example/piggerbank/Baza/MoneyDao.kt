@@ -1,9 +1,12 @@
 package com.example.piggerbank.Baza
 
+import android.telecom.Call
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import java.util.Calendar
+import java.util.Date
 
 @Dao
 interface MoneyDao {
@@ -40,7 +43,7 @@ interface MoneyDao {
     fun getAllMoneyCategory() : Array<String>
 
     @Query("SELECT moneyDate FROM Money")
-    fun getAllMoneyDate() : Array<String>
+    fun getAllMoneyDate() : Array<Date>
 
     @Query("SELECT id FROM Category")
     fun getAllCategoryId() : Array<Int>
@@ -67,7 +70,7 @@ interface MoneyDao {
     fun getOneMoneyValue(monId : Int) : Double
 
     @Query("SELECT moneyDate FROM Money WHERE id LIKE :monId")
-    fun getOneMoneyDate(monId : Int) : String
+    fun getOneMoneyDate(monId : Int) : Date
 
     @Query("SELECT categoryName FROM Category WHERE id LIKE :catId")
     fun getOneCatName(catId : Int) : String
@@ -76,7 +79,7 @@ interface MoneyDao {
     @Query("UPDATE Money SET moneyDescription=:newName, moneyValue=:newValue, moneyCategory_id=:newCat," +
             "moneyDate=:newDate WHERE id LIKE :monId")
     fun updateMoney(newName : String, newValue : Double, newCat : Int?,
-    newDate : String, monId : Int)
+    newDate : Date, monId : Int)
 
     @Query("UPDATE Category SET categoryName=:newName WHERE id LIKE :catId")
     fun updateCategory(newName: String, catId: Int)

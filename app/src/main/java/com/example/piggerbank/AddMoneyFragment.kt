@@ -150,6 +150,8 @@ class AddMoneyFragment : Fragment() {
             calendarBox.set(Calendar.MONTH, month)
             calendarBox.set(Calendar.DAY_OF_MONTH, day)
 
+           // calendarBox.set(year, month, day)
+
             updateText(calendarBox)
         }
         //otwieranie kalendarza
@@ -181,7 +183,7 @@ class AddMoneyFragment : Fragment() {
                 val valueDots = value!!.replace(",", ".")
                 val valueDouble = BigDecimal(valueDots).setScale(2, RoundingMode.HALF_UP).toDouble()
                 val newMoney = Money(
-                    null, valueDouble, description, catId, date
+                    null, valueDouble, description, catId, calendarBox.time
                 )
 
                 GlobalScope.launch(Dispatchers.IO) {
@@ -201,10 +203,10 @@ class AddMoneyFragment : Fragment() {
     }
 
     private fun updateText(calendar: Calendar){
-        val dateFormat = "dd-MM-yyyy"
+        val dateFormat = "yyyy-MM-dd"
         val simple = SimpleDateFormat(dateFormat, Locale.UK)
-        textDate.setText(simple.format(calendar.time))
 
+        textDate.setText(simple.format(calendar.time))
         /*val today = Calendar.getInstance()
         println(SimpleDateFormat().format(today.time))
         println(SimpleDateFormat("dd-MM-yyyy").format(Locale.UK))*/

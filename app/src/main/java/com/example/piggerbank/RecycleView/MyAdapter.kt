@@ -32,7 +32,9 @@ RecyclerView.Adapter<MyAdapter.MyViewHolder>(){
         holder.itemName.text = currentItem.name
         holder.itemValue.text = currentItem.value.toString()
         holder.itemCat.text = currentItem.cat
-        holder.itemDate.text = currentItem.date
+        holder.itemDay.text = currentItem.day.toString()
+        holder.itemMonth.text = currentItem.month.toString()
+        holder.itemYear.text = currentItem.year.toString()
     }
 
     override fun getItemCount(): Int {
@@ -46,7 +48,9 @@ RecyclerView.Adapter<MyAdapter.MyViewHolder>(){
         val itemName : TextView = itemView.findViewById(R.id.cart_item_name)
         val itemValue : TextView = itemView.findViewById(R.id.cart_item_value)
         val itemCat : TextView = itemView.findViewById(R.id.cart_item_category)
-        val itemDate : TextView = itemView.findViewById(R.id.cart_item_date)
+        val itemDay : TextView = itemView.findViewById(R.id.cart_item_day)
+        val itemMonth : TextView = itemView.findViewById(R.id.cart_item_month)
+        val itemYear : TextView = itemView.findViewById(R.id.cart_item_year)
 
         init {
             itemView.setOnClickListener {

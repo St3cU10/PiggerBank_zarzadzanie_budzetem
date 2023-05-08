@@ -17,6 +17,9 @@ import com.example.piggerbank.Baza.MoneyDB
 import androidx.recyclerview.widget.RecyclerView
 import com.example.piggerbank.RecycleView.MoneyRV
 import com.example.piggerbank.RecycleView.MyAdapter
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 
 
 class HomeFragment : Fragment() {
@@ -35,7 +38,7 @@ class HomeFragment : Fragment() {
     lateinit var moneyRVname : Array<String>
     lateinit var moneyRVvalue : Array<Double>
     lateinit var moneyRVcat : Array<String>
-    lateinit var moneyRVdate : Array<String>
+    lateinit var moneyRVdate : Array<Date>
 
 
 
@@ -70,6 +73,9 @@ class HomeFragment : Fragment() {
 
                 val id = moneyArrayList[position].id
                 //Toast.makeText(view.context, "$id", Toast.LENGTH_SHORT).show()
+
+                // ZAMIAST PRZENOSZENIA, moneyInitialize(category)
+
                 val fragment = EditMoneyFragment(id)
                 val transaction = fragmentManager?.beginTransaction()
                 transaction?.replace(R.id.fragment_container,fragment)?.commit()
@@ -161,6 +167,8 @@ class HomeFragment : Fragment() {
 
 
 
+    // MONEY INITIALIZE Z PARAMETREM GDZIE BEDZIE CATEGORY CO KLIKNIEMY I WYSWIETLA PO UPPER CATEGORY
+    // UPPER CATEGORY = CATEGORY W PARAMETRZE ( DOMYSLNIE NULL )
     private fun moneyInitialize(){
 
         moneyArrayList = arrayListOf<MoneyRV>()
@@ -171,14 +179,24 @@ class HomeFragment : Fragment() {
         moneyRVcat = moneyDB.moneyDao().getAllMoneyCategory()
         moneyRVdate = moneyDB.moneyDao().getAllMoneyDate()
 
+        val monthList = listOf("Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec",
+                        "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień")
         for (i in moneyRVname.indices)
         {
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = moneyRVdate[i].time
+
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+            val month = calendar.get(Calendar.MONTH)
+            val year = calendar.get(Calendar.YEAR)
             val moneyData = MoneyRV(
                 moneyRVid[i],
                 moneyRVname[i],
                 moneyRVvalue[i],
                 moneyRVcat[i],
-                moneyRVdate[i]
+                day.toString(),
+                monthList[month],
+                year.toString()
             )
             moneyArrayList.add(moneyData)
         }

@@ -3,6 +3,8 @@ package com.example.piggerbank.Baza
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.Calendar
+import java.util.Date
 
 @Entity
 data class Money(
@@ -11,5 +13,5 @@ data class Money(
     @ColumnInfo val moneyValue: Double,
     @ColumnInfo val moneyDescription: String?,
     @ColumnInfo val moneyCategory_id: Int?,
-    @ColumnInfo val moneyDate : String
+    @ColumnInfo val moneyDate : Date
 )

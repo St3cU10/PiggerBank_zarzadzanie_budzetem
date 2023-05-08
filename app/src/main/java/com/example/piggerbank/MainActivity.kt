@@ -35,17 +35,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Category(1, "PRZYCHODY", null),
 
         // KATEGORIE TESTOWE
-        Category(3, "AAA", 1),
-        Category(4, "BBB", 2),
-        Category(5, "CCC", 3)
+//        Category(3, "AAA", 1),
+//        Category(4, "BBB", 2),
+//        Category(5, "CCC", 3)
     )
 
         // KASA TESTOWA
-    private val testMoney = listOf(
-        Money(1, 1000.00, "Wypłata", 1, "10-04-2023"),
-        Money(2, 21.37, "Kremówki", 2, "21-03-2023"),
-        Money(3, 4.20, "Koszenie trawy", 1, "23-04-2023")
-    )
+//    private val testMoney = listOf(
+//        Money(1, 1000.00, "Wypłata", 1, "10-04-2023"),
+//        Money(2, 21.37, "Kremówki", 2, "21-03-2023"),
+//        Money(3, 4.20, "Koszenie trawy", 1, "23-04-2023")
+//    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
        // bindingCat = FragmentKategorieBinding.inflate(layoutInflater)
@@ -78,9 +78,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             moneyDB.moneyDao().insertCategory(it)
         }
 
-        testMoney.forEach {
-            moneyDB.moneyDao().insertMoney(it)
-        }
+//        testMoney.forEach {
+//            moneyDB.moneyDao().insertMoney(it)
+//        }
 
         categoriesList = moneyDB.moneyDao().getCategories()
 
