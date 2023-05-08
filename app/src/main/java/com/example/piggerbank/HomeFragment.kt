@@ -10,6 +10,7 @@ import android.widget.Adapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.piggerbank.Baza.MoneyDB
@@ -49,6 +50,14 @@ class HomeFragment : Fragment() {
         val nextBtn : Button = view.findViewById(R.id.addMoney)
         nextBtn.setOnClickListener{
             val fragment = AddMoneyFragment()
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(R.id.fragment_container,fragment)?.commit()
+        }
+
+
+        val filtersBtn : ImageButton = view.findViewById(R.id.filters_button)
+        filtersBtn.setOnClickListener{
+            val fragment = FiltersFragment()
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.fragment_container,fragment)?.commit()
         }
