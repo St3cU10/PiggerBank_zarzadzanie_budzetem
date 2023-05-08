@@ -1,3 +1,3 @@
 package com.example.piggerbank.RecycleView
 
-data class CategoryRV(var name : String, var upper : String?)
+data class CategoryRV(var id : Int, var name : String, var upper : String?)

@@ -49,28 +49,40 @@ class EditMoneyFragment(val moneyID : Int) : Fragment() {
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.fragment_container,fragment)?.commit()
         }
-        //usuwanie danych z layoutu
+
+        // USUWANIE
         val DeleteButoon : ImageButton = view.findViewById(R.id.delete_button)
-        DeleteButoon.setOnClickListener{}
+        DeleteButoon.setOnClickListener{
+            moneyDB.moneyDao().deleteOneMoney(moneyID)
+            val fragment = HomeFragment()
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(R.id.fragment_container,fragment)?.commit()
+
+        }
 
         categoriesList = moneyDB.moneyDao().getCategories()
         val btnAdd : Button = view.findViewById(R.id.button2)
         val buttonDate : Button = view.findViewById(R.id.buttonDate)
 
 
-        oldName = view.findViewById(R.id.oldName)
-        oldCategory = view.findViewById(R.id.oldCat)
-        oldValue = view.findViewById(R.id.oldValue)
-        oldDate = view.findViewById(R.id.oldDate)
+        //oldName = view.findViewById(R.id.oldName)
+        //oldCategory = view.findViewById(R.id.oldCat)
+       // oldValue = view.findViewById(R.id.oldValue)
+        //oldDate = view.findViewById(R.id.oldDate)
 
-        oldName.text = moneyDB.moneyDao().getOneMoneyDescription(moneyID)
-        oldCategory.text = moneyDB.moneyDao().getOneMoneyCategory(moneyID)
-        oldValue.text = moneyDB.moneyDao().getOneMoneyValue(moneyID).toString()
-        oldDate.text = moneyDB.moneyDao().getOneMoneyDate(moneyID)
+       //oldName = moneyDB.moneyDao().getOneMoneyDescription(moneyID)
+       //oldCategory = moneyDB.moneyDao().getOneMoneyCategory(moneyID)
+        //oldValue = moneyDB.moneyDao().getOneMoneyValue(moneyID).toString()
+        //oldDate = moneyDB.moneyDao().getOneMoneyDate(moneyID)
 
         newNameEditText = view.findViewById(R.id.newName)
         newValueEditText = view.findViewById(R.id.newValue)
         newDataTextView = view.findViewById(R.id.newDate)
+        //newDataTextView.text = oldDate.text.toString()
+
+        newNameEditText.setText(moneyDB.moneyDao().getOneMoneyDescription(moneyID))
+        newValueEditText.setText(moneyDB.moneyDao().getOneMoneyValue(moneyID).toString())
+
 
         // LISTA ROZSUWANA
         val autoComplete : AutoCompleteTextView = view.findViewById(R.id.newCat)
@@ -82,6 +94,7 @@ class EditMoneyFragment(val moneyID : Int) : Fragment() {
         }
         newCatDropMenu = autoComplete
 
+        newCatDropMenu.setText(moneyDB.moneyDao().getOneMoneyCategory(moneyID))
         // KALENDARZ
         val calendarBox = Calendar.getInstance()
         val dateBox = DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
