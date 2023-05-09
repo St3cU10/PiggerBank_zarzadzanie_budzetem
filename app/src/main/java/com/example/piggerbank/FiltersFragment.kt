@@ -24,8 +24,7 @@ class FiltersFragment : Fragment() {
     private lateinit var textDate2 : TextView
     private lateinit var buttonDate : Button
     private lateinit var buttonDate2 : Button
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
     private lateinit var moneyDB: MoneyDB
     private lateinit var adapterRV : MyAdapterCategory
     private lateinit var recyclerView: RecyclerView
@@ -59,10 +58,10 @@ class FiltersFragment : Fragment() {
         }
 
 
-        buttonDate = view.findViewById(R.id.buttonDate)
-        buttonDate2 = view.findViewById(R.id.buttonDate2)
-        textDate = view.findViewById(R.id.textDate)
-        textDate2 = view.findViewById(R.id.textDate2)
+       // buttonDate = view.findViewById(R.id.buttonDate)
+        //buttonDate2 = view.findViewById(R.id.buttonDate2)
+        //textDate = view.findViewById(R.id.textDate)
+       // textDate2 = view.findViewById(R.id.textDate2)
 
 
         //kalendarz pierwszy
@@ -86,7 +85,7 @@ class FiltersFragment : Fragment() {
         }
 
 
-        //otwieranie kalendarza pierwszego
+   /*     //otwieranie kalendarza pierwszego
         buttonDate.setOnClickListener{
             DatePickerDialog(view.context, dateBox, calendarBox.get(Calendar.YEAR), calendarBox.get(
                 Calendar.MONTH), calendarBox.get(Calendar.DAY_OF_MONTH)).show()
@@ -97,6 +96,8 @@ class FiltersFragment : Fragment() {
             DatePickerDialog(view.context, dateBox2, calendarBox2.get(Calendar.YEAR), calendarBox2.get(
                 Calendar.MONTH), calendarBox2.get(Calendar.DAY_OF_MONTH)).show()
         }
+
+    */
 /*
         *//*val spinner = view.findViewById<Spinner>(R.id.spinner)
         val arrayAdapter =
@@ -178,6 +179,8 @@ class FiltersFragment : Fragment() {
             }
         }
 */
+
+         */
         // RECYCLER VIEW
         moneyDB = MoneyDB.getInstance(MainActivity())
 
@@ -214,7 +217,7 @@ class FiltersFragment : Fragment() {
             transaction?.replace(R.id.fragment_container, fragment)?.commit()
         }
 
-        }*/
+
 
 
 
