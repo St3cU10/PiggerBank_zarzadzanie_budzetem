@@ -37,12 +37,23 @@ class FiltersFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_filters, container, false)
 
+
+        //przycisk ok ktory sluzy do zaakceptowania zmian i cofniecia
         val acceptBtn: Button = view.findViewById(R.id.ok_button)
         acceptBtn.setOnClickListener {
             val fragment = HomeFragment()
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.fragment_container, fragment)?.commit()
         }
+
+        //przycisk cofnij
+        val backBtn: ImageButton = view.findViewById(R.id.back_button)
+        backBtn.setOnClickListener {
+            val fragment = HomeFragment()
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(R.id.fragment_container, fragment)?.commit()
+        }
+
 
         buttonDate = view.findViewById(R.id.buttonDate)
         buttonDate2 = view.findViewById(R.id.buttonDate2)
