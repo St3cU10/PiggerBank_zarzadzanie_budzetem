@@ -87,6 +87,37 @@ interface MoneyDao {
     @Query("DELETE FROM Money WHERE id LIKE :monId")
     fun deleteOneMoney(monId: Int)
 
+    //SZUKANIE KATEGORII PO NADRZEDNYCH
+    @Query("SELECT id FROM Category WHERE upperCategory LIKE :upperId")
+    fun getAllCategoryIdWhereUpper(upperId: Int?) : Array<Int>
+
+    @Query("SELECT categoryName FROM Category WHERE upperCategory LIKE :upperId")
+    fun getAllCategoryNameWhereUpper(upperId: Int?) : Array<String>
+
+    @Query("SELECT b.categoryName FROM Category a LEFT JOIN Category b " +
+            "ON a.upperCategory = b.id WHERE a.upperCategory LIKE :upperId")
+    fun getAllUpperCategoryWhereUpper(upperId: Int?) : Array<String>
+
+    @Query("SELECT upperCategory FROM Category WHERE id LIKE :id")
+    fun getOneUpperCategory(id : Int) : Int?
+
+    // WYSWIETLANIE PO KATEGORII
+    @Query("SELECT id FROM Money WHERE moneyCategory_id LIKE :catId")
+    fun getMoneyIdWhereCategory(catId: Int) : Array<Int>
+
+    @Query("SELECT moneyValue FROM Money WHERE moneyCategory_id LIKE :catId")
+    fun getMoneyValueWhereCategory(catId: Int) : Array<Double>
+
+    @Query("SELECT moneyDescription FROM Money WHERE moneyCategory_id LIKE :catId")
+    fun getMoneyDescriptionWhereCategory(catId: Int) : Array<String>
+
+    @Query("SELECT Category.categoryName FROM Money INNER JOIN Category " +
+            "ON Money.moneyCategory_id = Category.id WHERE moneyCategory_id LIKE :catId")
+    fun getMoneyCategoryWhereCategory(catId: Int) : Array<String>
+
+    @Query("SELECT moneyDate FROM Money WHERE moneyCategory_id LIKE :catId")
+    fun getMoneyDateWhereCategory(catId: Int) : Array<Date>
+
    // @Query("SELECT SUM(moneyValue) AS suma FROM Money Where moneyCategory_id like :catnr")
     //fun calculateSum(catnr: Int = 1): Double
 }

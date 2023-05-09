@@ -23,7 +23,7 @@ import java.util.Calendar
 import java.util.Date
 
 
-class HomeFragment : Fragment() {
+class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
 
     private lateinit var moneyDB: MoneyDB
     private lateinit var categoriesList: List<String>
@@ -68,7 +68,7 @@ class HomeFragment : Fragment() {
         moneyDB = MoneyDB.getInstance(MainActivity())
 
             // RECYCLER VIEW
-        moneyInitialize()
+        moneyInitialize(upperIdInitialize)
         val layoutManager = LinearLayoutManager(context)
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = layoutManager
@@ -178,18 +178,28 @@ class HomeFragment : Fragment() {
 
     // MONEY INITIALIZE Z PARAMETREM GDZIE BEDZIE CATEGORY CO KLIKNIEMY I WYSWIETLA PO UPPER CATEGORY
     // UPPER CATEGORY = CATEGORY W PARAMETRZE ( DOMYSLNIE NULL )
-    private fun moneyInitialize(){
+    private fun moneyInitialize(upperId: Int?){
 
         moneyArrayList = arrayListOf<MoneyRV>()
 
-        moneyRVid = moneyDB.moneyDao().getAllMoneyId()
-        moneyRVname =  moneyDB.moneyDao().getAllMoneyName()
-        moneyRVvalue = moneyDB.moneyDao().getAllMoneyValue()
-        moneyRVcat = moneyDB.moneyDao().getAllMoneyCategory()
-        moneyRVdate = moneyDB.moneyDao().getAllMoneyDate()
-
         val monthList = listOf("Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec",
-                        "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień")
+            "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień")
+
+        if(upperId == null) {
+            moneyRVid = moneyDB.moneyDao().getAllMoneyId()
+            moneyRVname = moneyDB.moneyDao().getAllMoneyName()
+            moneyRVvalue = moneyDB.moneyDao().getAllMoneyValue()
+            moneyRVcat = moneyDB.moneyDao().getAllMoneyCategory()
+            moneyRVdate = moneyDB.moneyDao().getAllMoneyDate()
+            }
+        else{
+            moneyRVid = moneyDB.moneyDao().getMoneyIdWhereCategory(upperId)
+            moneyRVname = moneyDB.moneyDao().getMoneyDescriptionWhereCategory(upperId)
+            moneyRVvalue = moneyDB.moneyDao().getMoneyValueWhereCategory(upperId)
+            moneyRVcat = moneyDB.moneyDao().getMoneyCategoryWhereCategory(upperId)
+            moneyRVdate = moneyDB.moneyDao().getMoneyDateWhereCategory(upperId)
+        }
+
         for (i in moneyRVname.indices)
         {
             val calendar = Calendar.getInstance()
