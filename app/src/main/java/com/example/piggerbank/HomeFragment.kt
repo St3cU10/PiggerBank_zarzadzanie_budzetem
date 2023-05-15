@@ -39,6 +39,7 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
 
     lateinit var moneyRV : List<Money>
     private lateinit var money: TextView
+    private lateinit var suma : TextView
 
 
 
@@ -77,12 +78,19 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
         adapter = MyAdapter(moneyArrayList)
         recyclerView.adapter = adapter
 
+
+        money=view.findViewById(R.id.sumamoney)
+        suma = view.findViewById(R.id.textvievsuma)
+        if(upperIdInitialize == null)
+        {
+            money.visibility = View.GONE
+            suma.visibility = View.GONE
+        }
         var suma = 0.0
         for (money in moneyArrayList) {
             suma += money.value
         }
 
-         money=view.findViewById(R.id.sumamoney)
         money.text = suma.toString()
 
 
