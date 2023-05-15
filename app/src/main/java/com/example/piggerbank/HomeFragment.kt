@@ -6,12 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
-import android.widget.AutoCompleteTextView
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.Toast
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.piggerbank.Baza.MoneyDB
 
@@ -43,13 +38,14 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
     lateinit var moneyRVdate : Array<Date>
 
     lateinit var moneyRV : List<Money>
-
+    private lateinit var money: TextView
 
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
+
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
@@ -58,6 +54,8 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
             val fragment = AddMoneyFragment()
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.fragment_container,fragment)?.commit()
+
+
         }
 
 
@@ -79,6 +77,13 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
         adapter = MyAdapter(moneyArrayList)
         recyclerView.adapter = adapter
 
+        var suma = 0.0
+        for (money in moneyArrayList) {
+            suma += money.value
+        }
+
+         money=view.findViewById(R.id.sumamoney)
+        money.text = suma.toString()
 
 
 
@@ -101,6 +106,8 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
 
 
         })
+
+
 
 
 
