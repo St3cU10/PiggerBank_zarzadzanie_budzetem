@@ -80,6 +80,9 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
         recyclerView.adapter = adapter
 
 
+
+
+
         adapter.setOnItemCLickListener(object : MyAdapter.onItemClickListener{
             override fun onItemClick(position: Int) {
 
@@ -88,9 +91,12 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
 
                 // ZAMIAST PRZENOSZENIA, moneyInitialize(category)
 
-                val fragment = EditMoneyFragment(id)
-                val transaction = fragmentManager?.beginTransaction()
-                transaction?.replace(R.id.fragment_container,fragment)?.commit()
+                if(id!=null) {
+                    val fragment = EditMoneyFragment(id)
+
+                    val transaction = fragmentManager?.beginTransaction()
+                    transaction?.replace(R.id.fragment_container, fragment)?.commit()
+                }
             }
 
 
@@ -202,7 +208,24 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
              */
             }
         else{
-            moneyRV = moneyDB.moneyDao().getAllMoneyWhereCategory(upperId)
+            val catList = ArrayList<String>()
+            categoryList(upperId, 0, catList)
+
+            for(cat in catList)
+            {
+                val id = moneyDB.moneyDao().getId(cat)
+                if(id != null) {
+                    if(this::moneyRV.isInitialized) {
+                        moneyRV = moneyRV + moneyDB.moneyDao().getAllMoneyWhereCategory(id)
+                    }
+                    else{
+                        moneyRV = moneyDB.moneyDao().getAllMoneyWhereCategory(id)
+
+                    }
+                }
+            }
+
+            //moneyRV = moneyDB.moneyDao().getAllMoneyWhereCategory(upperId)
 
             // STARE POBIERANIE KASY
             /*
@@ -222,17 +245,16 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
             val month = calendar.get(Calendar.MONTH)
             val year = calendar.get(Calendar.YEAR)
 
-            val moneyData = i.id?.let {
-                MoneyRV(
-                    it,
+            val moneyData =MoneyRV(
+                    i.id,
                     i.moneyDescription,
                     i.moneyValue,
-                    moneyDB.moneyDao().getOneMoneyCategory(i.moneyCategory_id),
+                    moneyDB.moneyDao().getOneMoneyCategory(i.id),
                     day.toString(),
                     monthList[month],
                     year.toString()
                 )
-            }
+
             if (moneyData != null) {
                 moneyArrayList.add(moneyData)
             }
@@ -262,6 +284,20 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
 
  */
 
+
+    }
+
+    private fun categoryList(upperId: Int, offset: Int, catList: java.util.ArrayList<String>) {
+        val cat = moneyDB.moneyDao().getCategoryDownList(upperId, offset)
+        if (cat == null)
+            return
+
+        catList.add(moneyDB.moneyDao().getCategoryDownList(upperId, offset))
+        val id = moneyDB.moneyDao().getId(cat)
+        if (id != null) {
+            categoryList(id, 0, catList)
+        }
+        categoryList(upperId, offset = offset+1, catList)
 
     }
 

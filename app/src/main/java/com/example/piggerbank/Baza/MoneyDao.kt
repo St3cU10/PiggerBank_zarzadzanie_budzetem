@@ -133,6 +133,11 @@ interface MoneyDao {
     @Query("SELECT moneyDate FROM Money WHERE moneyCategory_id LIKE :catId")
     fun getMoneyDateWhereCategory(catId: Int) : Array<Date>
 
+    // LISTA KATEGORII PODRZEDNYCH
+    @Query("SELECT categoryName FROM Category WHERE upperCategory LIKE :upper LIMIT 1 OFFSET :offset")
+    fun getCategoryDownList(upper : Int, offset : Int) : String
+
+
     /*
     @Query("SELECT m.id, m.moneyValue, m.moneyDescription, m.moneyDate, c.categoryName FROM Money m " +
             "JOIN Category c ON m.moneyCategory_id = c.id WHERE moneyCategory_id LIKE :catId")

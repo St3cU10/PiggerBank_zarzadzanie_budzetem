@@ -35,9 +35,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         Category(1, "PRZYCHODY", null),
 
         // KATEGORIE TESTOWE
-//        Category(3, "AAA", 1),
-//        Category(4, "BBB", 2),
-//        Category(5, "CCC", 3)
+        Category(3, "AAA", 1),
+        Category(4, "BBB", 3),
+        Category(5, "CCC", 1),
+        Category(6, "DDD", 1),
+        Category(7, "EEE", 6)
     )
 
         // KASA TESTOWA
