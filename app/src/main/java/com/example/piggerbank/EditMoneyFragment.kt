@@ -105,7 +105,7 @@ class EditMoneyFragment(val moneyID : Int) : Fragment() {
         }
         newCatDropMenu = autoComplete
 
-        newCatDropMenu.setText(moneyDB.moneyDao().getOneMoneyCategory(moneyID))
+       // newCatDropMenu.setText(moneyDB.moneyDao().getOneMoneyCategory(moneyID))
         // KALENDARZ
         val calendarBox = Calendar.getInstance()
         val dateBox = DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.piggerbank.Baza.MoneyDB
 
 import androidx.recyclerview.widget.RecyclerView
+import com.example.piggerbank.Baza.Money
 import com.example.piggerbank.RecycleView.MoneyRV
 import com.example.piggerbank.RecycleView.MyAdapter
 import java.text.SimpleDateFormat
@@ -40,6 +41,8 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
     lateinit var moneyRVvalue : Array<Double>
     lateinit var moneyRVcat : Array<String>
     lateinit var moneyRVdate : Array<Date>
+
+    lateinit var moneyRV : List<Money>
 
 
 
@@ -186,20 +189,57 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
             "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień")
 
         if(upperId == null) {
+            moneyRV = moneyDB.moneyDao().getAllMoney()
+
+            // STARE POBIERANIE KASY
+        /*
             moneyRVid = moneyDB.moneyDao().getAllMoneyId()
             moneyRVname = moneyDB.moneyDao().getAllMoneyName()
             moneyRVvalue = moneyDB.moneyDao().getAllMoneyValue()
             moneyRVcat = moneyDB.moneyDao().getAllMoneyCategory()
             moneyRVdate = moneyDB.moneyDao().getAllMoneyDate()
+
+             */
             }
         else{
+            moneyRV = moneyDB.moneyDao().getAllMoneyWhereCategory(upperId)
+
+            // STARE POBIERANIE KASY
+            /*
             moneyRVid = moneyDB.moneyDao().getMoneyIdWhereCategory(upperId)
             moneyRVname = moneyDB.moneyDao().getMoneyDescriptionWhereCategory(upperId)
             moneyRVvalue = moneyDB.moneyDao().getMoneyValueWhereCategory(upperId)
             moneyRVcat = moneyDB.moneyDao().getMoneyCategoryWhereCategory(upperId)
             moneyRVdate = moneyDB.moneyDao().getMoneyDateWhereCategory(upperId)
+
+             */
         }
 
+        for (i in moneyRV){
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = i.moneyDate.time
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+            val month = calendar.get(Calendar.MONTH)
+            val year = calendar.get(Calendar.YEAR)
+
+            val moneyData = i.id?.let {
+                MoneyRV(
+                    it,
+                    i.moneyDescription,
+                    i.moneyValue,
+                    moneyDB.moneyDao().getOneMoneyCategory(i.moneyCategory_id),
+                    day.toString(),
+                    monthList[month],
+                    year.toString()
+                )
+            }
+            if (moneyData != null) {
+                moneyArrayList.add(moneyData)
+            }
+        }
+
+        // STARE DODAWANIE KASY DO RV
+/*
         for (i in moneyRVname.indices)
         {
             val calendar = Calendar.getInstance()
@@ -219,6 +259,8 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
             )
             moneyArrayList.add(moneyData)
         }
+
+ */
 
 
     }

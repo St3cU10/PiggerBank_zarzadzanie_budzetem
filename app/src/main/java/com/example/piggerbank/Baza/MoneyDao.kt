@@ -17,6 +17,19 @@ interface MoneyDao {
     @Insert(entity = Category::class, onConflict = OnConflictStrategy.IGNORE)
     fun insertCategory(category: Category)
 
+    @Query("SELECT * FROM Money")
+    fun getAllMoney(): List<Money>
+
+    @Query("SELECT * FROM Money WHERE moneyCategory_id LIKE :catId")
+    fun getAllMoneyWhereCategory(catId: Int) : List<Money>
+
+    @Query("SELECT * FROM Category")
+    fun getAllCategory() : List<Category>
+
+    @Query("SELECT b.categoryName FROM Category a LEFT JOIN Category b ON a.upperCategory = b.id " +
+            "WHERE a.upperCategory LIKE :upperCat LIMIT 1")
+    fun getupperCatName(upperCat: Int?) : String?
+
     @Query("SELECT categoryName FROM Category")
     fun getCategories(): List<String>
 
@@ -59,9 +72,11 @@ interface MoneyDao {
     @Query("SELECT moneyDescription FROM Money WHERE id LIKE :monId")
     fun getOneMoneyDescription(monId : Int) : String
 
+
+    // ID KATEGORII NA NAZWE
     @Query("SELECT Category.categoryName FROM Money INNER JOIN Category ON " +
             "Money.moneyCategory_id = Category.id WHERE Money.id LIKE :monId")
-    fun getOneMoneyCategory(monId: Int) : String
+    fun getOneMoneyCategory(monId: Int?) : String
 
     @Query("SELECT moneyCategory_id FROM Money WHERE id LIKE :monId")
     fun getOneMoneyCatId(monId: Int) : Int
@@ -118,6 +133,13 @@ interface MoneyDao {
     @Query("SELECT moneyDate FROM Money WHERE moneyCategory_id LIKE :catId")
     fun getMoneyDateWhereCategory(catId: Int) : Array<Date>
 
+    /*
+    @Query("SELECT m.id, m.moneyValue, m.moneyDescription, m.moneyDate, c.categoryName FROM Money m " +
+            "JOIN Category c ON m.moneyCategory_id = c.id WHERE moneyCategory_id LIKE :catId")
+    fun getAllMoneyWhereCategory(catId: Int) : List<Money>
+
+
+     */
    // @Query("SELECT SUM(moneyValue) AS suma FROM Money Where moneyCategory_id like :catnr")
     //fun calculateSum(catnr: Int = 1): Double
 }

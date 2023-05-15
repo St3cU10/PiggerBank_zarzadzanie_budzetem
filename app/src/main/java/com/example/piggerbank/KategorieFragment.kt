@@ -46,6 +46,8 @@ class KategorieFragment : Fragment() {
     lateinit var categoryRVupper : Array<String>
     lateinit var categoryRVid : Array<Int>
 
+    lateinit var categoryRV : List<Category>
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -136,10 +138,28 @@ class KategorieFragment : Fragment() {
     private fun categoryInitialize(){
 
         categoryArrayList = arrayListOf<CategoryRV>()
+        categoryRV = moneyDB.moneyDao().getAllCategory()
+
+        for (i in categoryRV)
+        {
+            val categoryData = i.id?.let {
+                CategoryRV(
+                    it,
+                    i.categoryName,
+                    moneyDB.moneyDao().getupperCatName(i.upperCategory)
+                )
+            }
+            if (categoryData != null) {
+                categoryArrayList.add(categoryData)
+            }
+        }
+/*
 
         categoryRVid = moneyDB.moneyDao().getAllCategoryId()
         categoryRVname = moneyDB.moneyDao().getAllCategoryName()
         categoryRVupper = moneyDB.moneyDao().getAllUpperCategory()
+
+
 
         for (i in categoryRVname.indices)
         {
@@ -150,6 +170,8 @@ class KategorieFragment : Fragment() {
             )
             categoryArrayList.add(categoryData)
         }
+
+ */
     }
 
 }
