@@ -43,14 +43,17 @@
             app:layout_constraintTop_toBottomOf="@+id/category_edittext"
             tools:layout_editor_absoluteX="-1dp">
 
-            <AutoCompleteTextView
-                android:id="@+id/auto_complete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Kategoria nadrzedna"
-                android:inputType="none"
-                tools:layout_editor_absoluteX="16dp"
-                tools:layout_editor_absoluteY="207dp" />
+                <AutoCompleteTextView
+                    android:id="@+id/auto_complete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Kategoria nadrzedna"
+                    android:inputType="none"
+                    android:textColor="@color/white"
+                    android:textColorHint="#FFFFFF"
+                    tools:layout_editor_absoluteX="16dp"
+                    tools:layout_editor_absoluteY="207dp"
+                    tools:visibility="invisible" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
