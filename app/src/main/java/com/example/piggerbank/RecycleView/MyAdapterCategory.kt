@@ -7,7 +7,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.piggerbank.R
 
-class MyAdapterCategory(private val categoryList : ArrayList<CategoryRV>) :
+class MyAdapterCategory(private var categoryList : ArrayList<CategoryRV>) :
 RecyclerView.Adapter<MyAdapterCategory.MyViewHolder>() {
 
     private lateinit var mListener : onItemClickListener
@@ -27,6 +27,11 @@ RecyclerView.Adapter<MyAdapterCategory.MyViewHolder>() {
 
     override fun getItemCount(): Int {
         return categoryList.size
+    }
+
+    fun updateData(newData: ArrayList<CategoryRV>){
+        categoryList = newData
+        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: MyAdapterCategory.MyViewHolder, position: Int) {

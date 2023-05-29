@@ -7,6 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.piggerbank.Baza.MoneyDB
+import com.example.piggerbank.RecycleView.CategoryRV
+import com.example.piggerbank.RecycleView.MyAdapterCategory
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -19,10 +24,15 @@ class FiltersFragment : Fragment() {
     private lateinit var textDate2 : TextView
     private lateinit var buttonDate : Button
     private lateinit var buttonDate2 : Button
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
 
-    }
+    private lateinit var moneyDB: MoneyDB
+    private lateinit var adapterRV : MyAdapterCategory
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var categoryArrayyList : ArrayList<CategoryRV>
+
+    lateinit var categoryRVname : Array<String>
+    lateinit var categoryRVupper : Array<String>
+    lateinit var categoryRVid : Array<Int>
 
 
 
@@ -38,13 +48,6 @@ class FiltersFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_filters, container, false)
 
 
-        //przycisk ok ktory sluzy do zaakceptowania zmian i cofniecia
-        val acceptBtn: Button = view.findViewById(R.id.ok_button)
-        acceptBtn.setOnClickListener {
-            val fragment = HomeFragment()
-            val transaction = fragmentManager?.beginTransaction()
-            transaction?.replace(R.id.fragment_container, fragment)?.commit()
-        }
 
         //przycisk cofnij
         val backBtn: ImageButton = view.findViewById(R.id.back_button)
@@ -55,10 +58,10 @@ class FiltersFragment : Fragment() {
         }
 
 
-        buttonDate = view.findViewById(R.id.buttonDate)
-        buttonDate2 = view.findViewById(R.id.buttonDate2)
-        textDate = view.findViewById(R.id.textDate)
-        textDate2 = view.findViewById(R.id.textDate2)
+       // buttonDate = view.findViewById(R.id.buttonDate)
+        //buttonDate2 = view.findViewById(R.id.buttonDate2)
+        //textDate = view.findViewById(R.id.textDate)
+       // textDate2 = view.findViewById(R.id.textDate2)
 
 
         //kalendarz pierwszy
@@ -82,7 +85,7 @@ class FiltersFragment : Fragment() {
         }
 
 
-        //otwieranie kalendarza pierwszego
+   /*     //otwieranie kalendarza pierwszego
         buttonDate.setOnClickListener{
             DatePickerDialog(view.context, dateBox, calendarBox.get(Calendar.YEAR), calendarBox.get(
                 Calendar.MONTH), calendarBox.get(Calendar.DAY_OF_MONTH)).show()
@@ -93,6 +96,8 @@ class FiltersFragment : Fragment() {
             DatePickerDialog(view.context, dateBox2, calendarBox2.get(Calendar.YEAR), calendarBox2.get(
                 Calendar.MONTH), calendarBox2.get(Calendar.DAY_OF_MONTH)).show()
         }
+
+    */
 /*
         *//*val spinner = view.findViewById<Spinner>(R.id.spinner)
         val arrayAdapter =
@@ -140,6 +145,11 @@ class FiltersFragment : Fragment() {
 
 
         /*// access the items of the list
+
+
+        // ARTURA - ZAKOMENTOWALEM BO COS KRZYCZALO
+
+  /*      // access the items of the list
         val filters = resources.getStringArray(R.array.Filters)
         // access the spinner
         val spinner = view.findViewById<Spinner>(R.id.spinner)
@@ -167,7 +177,47 @@ class FiltersFragment : Fragment() {
                     // write code to perform some action
                 }
             }
-        }*/
+        }
+*/
+
+         */
+        // RECYCLER VIEW
+        moneyDB = MoneyDB.getInstance(MainActivity())
+
+        categoryInitialize(null)
+        val layoutManager = LinearLayoutManager(context)
+        recyclerView = view.findViewById(R.id.recycler_view)
+        recyclerView.layoutManager = layoutManager
+        recyclerView.setHasFixedSize(true)
+        adapterRV = MyAdapterCategory(categoryArrayyList)
+        recyclerView.adapter = adapterRV
+
+
+        // SZUKANIE GLEBIEJ
+        adapterRV.setOnItemClickListener(object : MyAdapterCategory.onItemClickListener{
+            override fun onItemClick(position: Int){
+                val id = categoryArrayyList[position].id
+                //val upper : Int? = moneyDB.moneyDao().getOneUpperCategory(id)
+                categoryInitialize(id)
+                adapterRV.updateData(categoryArrayyList)
+                adapterRV.notifyDataSetChanged()
+            }
+        })
+
+        // AKCEPTACJA FILTROW
+        val acceptBtn: Button = view.findViewById(R.id.ok_button)
+        acceptBtn.setOnClickListener {
+            var catUpper : Int? = null
+            if (categoryArrayyList.size > 0) {
+                val catId = categoryArrayyList[0].id
+                catUpper = moneyDB.moneyDao().getOneUpperCategory(catId)
+            }
+            val fragment = HomeFragment(catUpper)
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(R.id.fragment_container, fragment)?.commit()
+        }
+
+
 
 
 
@@ -212,6 +262,42 @@ class FiltersFragment : Fragment() {
         val regex = Regex("[0-9.]+")
 
         return regex.matches(valDots)
+    }
+
+    private fun categoryInitialize(upper : Int?) {
+        categoryArrayyList = arrayListOf<CategoryRV>()
+
+        if (upper == null)
+        {
+            categoryRVid = arrayOf<Int>(1, 2)
+            categoryRVname = arrayOf<String>("PRZYCHODY", "WYDATKI")
+            categoryRVupper = moneyDB.moneyDao().getAllUpperCategory()
+
+            for (i in categoryRVid.indices)
+            {
+                val categoryData = CategoryRV(
+                    categoryRVid[i],
+                    categoryRVname[i],
+                    categoryRVupper[i]
+                )
+                categoryArrayyList.add(categoryData)
+            }
+            return
+        }
+
+        categoryRVid = moneyDB.moneyDao().getAllCategoryIdWhereUpper(upper)
+        categoryRVname = moneyDB.moneyDao().getAllCategoryNameWhereUpper(upper)
+        categoryRVupper = moneyDB.moneyDao().getAllUpperCategoryWhereUpper(upper)
+
+        for (i in categoryRVid.indices)
+        {
+            val categoryData = CategoryRV(
+                categoryRVid[i],
+                categoryRVname[i],
+                categoryRVupper[i]
+            )
+            categoryArrayyList.add(categoryData)
+        }
     }
 
 

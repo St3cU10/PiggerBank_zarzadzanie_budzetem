@@ -6,21 +6,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
-import android.widget.AutoCompleteTextView
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.Toast
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.piggerbank.Baza.MoneyDB
 
 import androidx.recyclerview.widget.RecyclerView
+import com.example.piggerbank.Baza.Money
 import com.example.piggerbank.RecycleView.MoneyRV
 import com.example.piggerbank.RecycleView.MyAdapter
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 
 
-class HomeFragment : Fragment() {
+class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
 
     private lateinit var moneyDB: MoneyDB
     private lateinit var categoriesList: List<String>
@@ -36,14 +35,18 @@ class HomeFragment : Fragment() {
     lateinit var moneyRVname : Array<String>
     lateinit var moneyRVvalue : Array<Double>
     lateinit var moneyRVcat : Array<String>
-    lateinit var moneyRVdate : Array<String>
+    lateinit var moneyRVdate : Array<Date>
 
+    lateinit var moneyRV : List<Money>
+    private lateinit var money: TextView
+    private lateinit var suma : TextView
 
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
+
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
@@ -52,6 +55,8 @@ class HomeFragment : Fragment() {
             val fragment = AddMoneyFragment()
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.fragment_container,fragment)?.commit()
+
+
         }
 
 
@@ -65,7 +70,7 @@ class HomeFragment : Fragment() {
         moneyDB = MoneyDB.getInstance(MainActivity())
 
             // RECYCLER VIEW
-        moneyInitialize()
+        moneyInitialize(upperIdInitialize)
         val layoutManager = LinearLayoutManager(context)
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = layoutManager
@@ -74,18 +79,59 @@ class HomeFragment : Fragment() {
         recyclerView.adapter = adapter
 
 
+        money=view.findViewById(R.id.sumamoney)
+        suma = view.findViewById(R.id.textvievsuma)
+        if(upperIdInitialize == null)
+        {
+            val przychodyList = arrayListOf(1)
+            val wydatkiList = arrayListOf(2)
+            categoryIdList(1, 0, przychodyList)
+            categoryIdList(2, 0, wydatkiList)
+
+            var bilans = 0.0
+            for (i in przychodyList) {
+                bilans += moneyDB.moneyDao().getSumValueWhereCat(i)
+            }
+
+            for (i in wydatkiList){
+                bilans -= moneyDB.moneyDao().getSumValueWhereCat(i)
+            }
+
+            money.text = bilans.toString()
+            suma.text = "Bilans: "
+
+        }
+        else {
+            var suma = 0.0
+            for (money in moneyArrayList) {
+                suma += money.value
+            }
+            money.text = suma.toString()
+        }
+
+
+
+
         adapter.setOnItemCLickListener(object : MyAdapter.onItemClickListener{
             override fun onItemClick(position: Int) {
 
                 val id = moneyArrayList[position].id
                 //Toast.makeText(view.context, "$id", Toast.LENGTH_SHORT).show()
-                val fragment = EditMoneyFragment(id)
-                val transaction = fragmentManager?.beginTransaction()
-                transaction?.replace(R.id.fragment_container,fragment)?.commit()
+
+                // ZAMIAST PRZENOSZENIA, moneyInitialize(category)
+
+                if(id!=null) {
+                    val fragment = EditMoneyFragment(id)
+
+                    val transaction = fragmentManager?.beginTransaction()
+                    transaction?.replace(R.id.fragment_container, fragment)?.commit()
+                }
             }
 
 
         })
+
+
 
 
 
@@ -170,28 +216,133 @@ class HomeFragment : Fragment() {
 
 
 
-    private fun moneyInitialize(){
+    // MONEY INITIALIZE Z PARAMETREM GDZIE BEDZIE CATEGORY CO KLIKNIEMY I WYSWIETLA PO UPPER CATEGORY
+    // UPPER CATEGORY = CATEGORY W PARAMETRZE ( DOMYSLNIE NULL )
+    private fun moneyInitialize(upperId: Int?){
 
         moneyArrayList = arrayListOf<MoneyRV>()
 
-        moneyRVid = moneyDB.moneyDao().getAllMoneyId()
-        moneyRVname =  moneyDB.moneyDao().getAllMoneyName()
-        moneyRVvalue = moneyDB.moneyDao().getAllMoneyValue()
-        moneyRVcat = moneyDB.moneyDao().getAllMoneyCategory()
-        moneyRVdate = moneyDB.moneyDao().getAllMoneyDate()
+        val monthList = listOf("Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec",
+            "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień")
 
+        if(upperId == null) {
+            moneyRV = moneyDB.moneyDao().getAllMoney()
+
+            // STARE POBIERANIE KASY
+        /*
+            moneyRVid = moneyDB.moneyDao().getAllMoneyId()
+            moneyRVname = moneyDB.moneyDao().getAllMoneyName()
+            moneyRVvalue = moneyDB.moneyDao().getAllMoneyValue()
+            moneyRVcat = moneyDB.moneyDao().getAllMoneyCategory()
+            moneyRVdate = moneyDB.moneyDao().getAllMoneyDate()
+
+             */
+            }
+        else{
+            val catList = ArrayList<String>()
+            categoryList(upperId, 0, catList)
+
+            for(cat in catList)
+            {
+                val id = moneyDB.moneyDao().getId(cat)
+                if(id != null) {
+                    if(this::moneyRV.isInitialized) {
+                        moneyRV = moneyRV + moneyDB.moneyDao().getAllMoneyWhereCategory(id)
+                    }
+                    else{
+                        moneyRV = moneyDB.moneyDao().getAllMoneyWhereCategory(id)
+
+                    }
+                }
+            }
+
+            //moneyRV = moneyDB.moneyDao().getAllMoneyWhereCategory(upperId)
+
+            // STARE POBIERANIE KASY
+            /*
+            moneyRVid = moneyDB.moneyDao().getMoneyIdWhereCategory(upperId)
+            moneyRVname = moneyDB.moneyDao().getMoneyDescriptionWhereCategory(upperId)
+            moneyRVvalue = moneyDB.moneyDao().getMoneyValueWhereCategory(upperId)
+            moneyRVcat = moneyDB.moneyDao().getMoneyCategoryWhereCategory(upperId)
+            moneyRVdate = moneyDB.moneyDao().getMoneyDateWhereCategory(upperId)
+
+             */
+        }
+
+        for (i in moneyRV){
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = i.moneyDate.time
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+            val month = calendar.get(Calendar.MONTH)
+            val year = calendar.get(Calendar.YEAR)
+
+            val moneyData =MoneyRV(
+                    i.id,
+                    i.moneyDescription,
+                    i.moneyValue,
+                    moneyDB.moneyDao().getOneMoneyCategory(i.id),
+                    day.toString(),
+                    monthList[month],
+                    year.toString()
+                )
+
+            if (moneyData != null) {
+                moneyArrayList.add(moneyData)
+            }
+        }
+
+        // STARE DODAWANIE KASY DO RV
+/*
         for (i in moneyRVname.indices)
         {
+            val calendar = Calendar.getInstance()
+            calendar.timeInMillis = moneyRVdate[i].time
+
+            val day = calendar.get(Calendar.DAY_OF_MONTH)
+            val month = calendar.get(Calendar.MONTH)
+            val year = calendar.get(Calendar.YEAR)
             val moneyData = MoneyRV(
                 moneyRVid[i],
                 moneyRVname[i],
                 moneyRVvalue[i],
                 moneyRVcat[i],
-                moneyRVdate[i]
+                day.toString(),
+                monthList[month],
+                year.toString()
             )
             moneyArrayList.add(moneyData)
         }
 
+ */
+
+
+    }
+
+    private fun categoryList(upperId: Int, offset: Int, catList: java.util.ArrayList<String>) {
+        val cat = moneyDB.moneyDao().getCategoryDownList(upperId, offset)
+        if (cat == null)
+            return
+
+        catList.add(moneyDB.moneyDao().getCategoryDownList(upperId, offset))
+        val id = moneyDB.moneyDao().getId(cat)
+        if (id != null) {
+            categoryList(id, 0, catList)
+        }
+        categoryList(upperId, offset = offset+1, catList)
+
+    }
+
+    private fun categoryIdList(upperId: Int, offset: Int, catList: java.util.ArrayList<Int>) {
+        val cat = moneyDB.moneyDao().getCategoryDownList(upperId, offset)
+        if (cat == null)
+            return
+
+        catList.add(moneyDB.moneyDao().getCategoryIdDownList(upperId, offset))
+        val id = moneyDB.moneyDao().getId(cat)
+        if (id != null) {
+            categoryIdList(id, 0, catList)
+        }
+        categoryIdList(upperId, offset = offset+1, catList)
 
     }
 

@@ -1,4 +1,7 @@
 package com.example.piggerbank.RecycleView
 
-data class MoneyRV(var id : Int, var name : String, var value : Double,
-                   var cat : String, var date : String)
+import java.util.Calendar
+import java.util.Date
+
+data class MoneyRV(var id : Int?, var name : String?, var value : Double,
+                   var cat : String, var day : String, var month : String, var year : String)

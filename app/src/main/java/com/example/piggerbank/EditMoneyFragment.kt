@@ -70,15 +70,26 @@ class EditMoneyFragment(val moneyID : Int) : Fragment() {
        // oldValue = view.findViewById(R.id.oldValue)
         //oldDate = view.findViewById(R.id.oldDate)
 
-       //oldName = moneyDB.moneyDao().getOneMoneyDescription(moneyID)
-       //oldCategory = moneyDB.moneyDao().getOneMoneyCategory(moneyID)
-        //oldValue = moneyDB.moneyDao().getOneMoneyValue(moneyID).toString()
-        //oldDate = moneyDB.moneyDao().getOneMoneyDate(moneyID)
+        //oldName.text = moneyDB.moneyDao().getOneMoneyDescription(moneyID)
+        //oldCategory.text = moneyDB.moneyDao().getOneMoneyCategory(moneyID)
+        //oldValue.text = moneyDB.moneyDao().getOneMoneyValue(moneyID).toString()
+        //oldDate.text = moneyDB.moneyDao().getOneMoneyDate(moneyID).toString()
+        val calendar: Calendar = Calendar.getInstance()
+        calendar.timeInMillis = (moneyDB.moneyDao().getOneMoneyDate(moneyID).time)
+
+        val monthList = listOf("Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec",
+            "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień")
+
+        //oldDate.text = calendar.get(Calendar.DAY_OF_MONTH).toString() + "-" +
+         //       monthList[calendar.get(Calendar.MONTH)] + "-" +
+          //      calendar.get(Calendar.YEAR).toString()
 
         newNameEditText = view.findViewById(R.id.newName)
         newValueEditText = view.findViewById(R.id.newValue)
         newDataTextView = view.findViewById(R.id.newDate)
-        //newDataTextView.text = oldDate.text.toString()
+        newDataTextView.text = calendar.get(Calendar.DAY_OF_MONTH).toString() + "-" +
+                monthList[calendar.get(Calendar.MONTH)] + "-" +
+                calendar.get(Calendar.YEAR).toString()
 
         newNameEditText.setText(moneyDB.moneyDao().getOneMoneyDescription(moneyID))
         newValueEditText.setText(moneyDB.moneyDao().getOneMoneyValue(moneyID).toString())
@@ -94,7 +105,7 @@ class EditMoneyFragment(val moneyID : Int) : Fragment() {
         }
         newCatDropMenu = autoComplete
 
-        newCatDropMenu.setText(moneyDB.moneyDao().getOneMoneyCategory(moneyID))
+       // newCatDropMenu.setText(moneyDB.moneyDao().getOneMoneyCategory(moneyID))
         // KALENDARZ
         val calendarBox = Calendar.getInstance()
         val dateBox = DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
@@ -123,7 +134,7 @@ class EditMoneyFragment(val moneyID : Int) : Fragment() {
 
 
                 GlobalScope.launch(Dispatchers.IO) {
-                    moneyDB.moneyDao().updateMoney(name, valueDouble, catId, date, moneyID)
+                    moneyDB.moneyDao().updateMoney(name, valueDouble, catId, calendarBox.time, moneyID)
                 }
                 Toast.makeText(context, "Zedytowano: $name", Toast.LENGTH_SHORT).show()
                 val fragment = HomeFragment()
@@ -143,7 +154,7 @@ class EditMoneyFragment(val moneyID : Int) : Fragment() {
 
 
     private fun updateText(calendar: Calendar){
-        val dateFormat = "dd-MM-yyyy"
+        val dateFormat = "d-MMMM-yyyy"
         val simple = SimpleDateFormat(dateFormat, Locale.UK)
         newDataTextView.setText(simple.format(calendar.time))
 
