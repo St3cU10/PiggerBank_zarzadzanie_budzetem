@@ -7,6 +7,7 @@
     android:layout_height="156dp"
     android:gravity="bottom"
     android:padding="16dp"
+    android:layout_marginLeft="10dp"
     android:background="@drawable/napislogo1"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
