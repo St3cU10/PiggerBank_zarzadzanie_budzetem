@@ -57,11 +57,11 @@ class FiltersFragment : Fragment() {
             transaction?.replace(R.id.fragment_container, fragment)?.commit()
         }
 
-
-       // buttonDate = view.findViewById(R.id.buttonDate)
-        //buttonDate2 = view.findViewById(R.id.buttonDate2)
-        //textDate = view.findViewById(R.id.textDate)
-       // textDate2 = view.findViewById(R.id.textDate2)
+        //funckje kalendarza
+        buttonDate = view.findViewById(R.id.buttonDate)
+        buttonDate2 = view.findViewById(R.id.buttonDate2)
+        textDate = view.findViewById(R.id.textDate)
+        textDate2 = view.findViewById(R.id.textDate2)
 
 
         //kalendarz pierwszy
@@ -85,7 +85,7 @@ class FiltersFragment : Fragment() {
         }
 
 
-   /*     //otwieranie kalendarza pierwszego
+        //otwieranie kalendarza pierwszego
         buttonDate.setOnClickListener{
             DatePickerDialog(view.context, dateBox, calendarBox.get(Calendar.YEAR), calendarBox.get(
                 Calendar.MONTH), calendarBox.get(Calendar.DAY_OF_MONTH)).show()
@@ -97,7 +97,7 @@ class FiltersFragment : Fragment() {
                 Calendar.MONTH), calendarBox2.get(Calendar.DAY_OF_MONTH)).show()
         }
 
-    */
+
 /*
         *//*val spinner = view.findViewById<Spinner>(R.id.spinner)
         val arrayAdapter =

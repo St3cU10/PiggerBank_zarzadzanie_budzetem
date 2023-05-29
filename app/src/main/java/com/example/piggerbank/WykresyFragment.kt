@@ -47,7 +47,7 @@ class WykresyFragment : Fragment() {
 
         private val SetPrzychody = listOf(
             "JAN" to 4F,
-            "FEB" to 1F,
+            "FEB" to 10F,
             "MAR" to 2F,
             "MAY" to 2.3F,
             "APR" to 5F,
