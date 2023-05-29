@@ -6,31 +6,80 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.TextView
 import com.db.williamchart.view.BarChartView
-
+import com.example.piggerbank.Baza.MoneyDB
 
 class WykresyFragment : Fragment() {
 
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private lateinit var moneyDB: MoneyDB
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_wykresy, container, false)
-        val wykresprzychody : BarChartView = view.findViewById(R.id.barChart)
-        val wykreswydatki : BarChartView = view.findViewById(R.id.barChart2)
+        moneyDB = MoneyDB.getInstance(MainActivity())
+
+        val wykresprzychody : BarChartView = view.findViewById(R.id.barChart2)
+        val wykreswydatki : BarChartView = view.findViewById(R.id.barChart)
+        val przychodyText : TextView = view.findViewById(R.id.tvChartName2)
+        val wydatkiText : TextView = view.findViewById(R.id.tvChartName)
+
+
+        val SetPrzychody = ArrayList<Pair<String, Float>>()
+
+
+        val SetWydatki = ArrayList<Pair<String, Float>>()
+
+        val przychodyList = arrayListOf(1)
+        val wydatkiList = arrayListOf(2)
+        categoryIdList(1, 0, przychodyList)
+        categoryIdList(2, 0, wydatkiList)
+
+        if(przychodyList.size == 1 || moneyDB.moneyDao().getSumValueWhereCat(1) == 0F){
+            wykresprzychody.visibility = View.GONE
+            przychodyText.text = "Brak przychodów do porównania"
+        }
+        if (wydatkiList.size == 1 || moneyDB.moneyDao().getSumValueWhereCat(2) == 0F){
+            wykreswydatki.visibility = View.GONE
+            wydatkiText.text = "Brak wydatków do porównania"
+        }
+
+        for(i in przychodyList){
+            val catList = arrayListOf(i)
+            categoryIdList(i, 0, catList)
+
+            var suma = 0.0
+            for (j in catList){
+                suma += moneyDB.moneyDao().getSumValueWhereCat(j)
+            }
+            if(suma == 0.0)
+                continue
+            val catName = moneyDB.moneyDao().getOneCatName(i)
+            SetPrzychody.add(catName to suma.toFloat())
+        }
+
+        for(i in wydatkiList){
+            val catList = arrayListOf(i)
+            categoryIdList(i, 0, catList)
+
+            var suma = 0.0
+            for (j in catList){
+                suma += moneyDB.moneyDao().getSumValueWhereCat(j)
+            }
+
+            if(suma == 0.0)
+                continue
+            val catName = moneyDB.moneyDao().getOneCatName(i)
+            SetWydatki.add(catName to suma.toFloat())
+        }
 
 
         wykresprzychody.animate(SetPrzychody)
 
         wykreswydatki.animate(SetWydatki)
-
 
         /*val prevBtn : ImageButton = view.findViewById(R.id.back_button2)
         prevBtn.setOnClickListener{
@@ -43,27 +92,18 @@ class WykresyFragment : Fragment() {
 
 
 
-    companion object {
+    fun categoryIdList(upperId: Int, offset: Int, catList: java.util.ArrayList<Int>) {
+        val cat = moneyDB.moneyDao().getCategoryDownList(upperId, offset)
+        if (cat == null)
+            return
 
-        private val SetPrzychody = listOf(
-            "JAN" to 4F,
-            "FEB" to 10F,
-            "MAR" to 2F,
-            "MAY" to 2.3F,
-            "APR" to 5F,
-            "JUN" to 4F
-        )
+        catList.add(moneyDB.moneyDao().getCategoryIdDownList(upperId, offset))
+        val id = moneyDB.moneyDao().getId(cat)
+        if (id != null) {
+            categoryIdList(id, 0, catList)
+        }
+        categoryIdList(upperId, offset = offset+1, catList)
 
-        private val SetWydatki = listOf(
-            "JAN" to 4F,
-            "FEB" to 1F,
-            "MAR" to 2F,
-            "MAY" to 2.3F,
-            "APR" to 5F,
-            "JUN" to 4F
-        )
-
-        private const val animationDuration = 1000L
     }
 }
 

@@ -15,11 +15,13 @@
         android:paddingBottom="32dp"
         android:text="wydatki"
         android:textColor="@color/white"
-        android:textStyle="bold"
         android:textSize="30dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/barChart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/barChart" />
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <com.db.williamchart.view.BarChartView
         android:id="@+id/barChart"
@@ -35,9 +37,9 @@
         app:chart_spacing="15dp"
         app:layout_constraintBottom_toTopOf="@+id/barChart2"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <TextView
         android:id="@+id/tvChartName2"

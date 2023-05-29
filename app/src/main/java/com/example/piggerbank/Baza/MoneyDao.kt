@@ -23,6 +23,10 @@ interface MoneyDao {
     @Query("SELECT * FROM Money WHERE moneyCategory_id LIKE :catId")
     fun getAllMoneyWhereCategory(catId: Int) : List<Money>
 
+    @Query("SELECT * FROM Money WHERE moneyCategory_id LIKE :catId " +
+            "AND moneyDate >= :dateFrom AND moneyDate <= :dateTo")
+    fun getAllMoneyWhereCategoryAndDate(catId: Int, dateFrom: Long?, dateTo: Long?) : List<Money>
+
     @Query("SELECT * FROM Category")
     fun getAllCategory() : List<Category>
 
@@ -143,6 +147,16 @@ interface MoneyDao {
     // SUMOWANIE KWOTY DLA DANEJ KATEGORII
     @Query("SELECT SUM(moneyValue) FROM Money WHERE moneyCategory_id LIKE :cat")
     fun getSumValueWhereCat(cat : Int) : Float
+
+    @Query("SELECT SUM(moneyValue) FROM Money WHERE moneyCategory_id LIKE :cat " +
+            "AND moneyDate >= :dateFrom AND moneyDate <= :dateTo")
+    fun getSumValueWhereCatAndDate(cat : Int, dateFrom: Long?, dateTo: Long?) : Float
+
+    @Query("SELECT Count(id) From Category")
+    fun getNumberOfCategories() : Int
+
+    @Query("SELECT * FROM Money WHERE moneyDate >= :dateFrom AND moneyDate <= :dateTo")
+    fun getAllMoneyWhereDate(dateFrom : Long?, dateTo : Long?) : List<Money>
 
     /*
     @Query("SELECT m.id, m.moneyValue, m.moneyDescription, m.moneyDate, c.categoryName FROM Money m " +

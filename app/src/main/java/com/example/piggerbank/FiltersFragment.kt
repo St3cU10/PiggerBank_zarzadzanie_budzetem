@@ -63,7 +63,8 @@ class FiltersFragment : Fragment() {
         textDate = view.findViewById(R.id.textDate)
         textDate2 = view.findViewById(R.id.textDate2)
 
-
+        var cal1Set = 0
+        var cal2Set = 0
         //kalendarz pierwszy
         val calendarBox = Calendar.getInstance()
         val dateBox = DatePickerDialog.OnDateSetListener { datePicker, year, month, day ->
@@ -71,6 +72,7 @@ class FiltersFragment : Fragment() {
             calendarBox.set(Calendar.MONTH, month)
             calendarBox.set(Calendar.DAY_OF_MONTH, day)
 
+            cal1Set = 1
             updateText(calendarBox)
         }
 
@@ -81,6 +83,7 @@ class FiltersFragment : Fragment() {
             calendarBox2.set(Calendar.MONTH, month)
             calendarBox2.set(Calendar.DAY_OF_MONTH, day)
 
+            cal2Set = 1
             updateText2(calendarBox2)
         }
 
@@ -207,14 +210,26 @@ class FiltersFragment : Fragment() {
         // AKCEPTACJA FILTROW
         val acceptBtn: Button = view.findViewById(R.id.ok_button)
         acceptBtn.setOnClickListener {
-            var catUpper : Int? = null
-            if (categoryArrayyList.size > 0) {
-                val catId = categoryArrayyList[0].id
-                catUpper = moneyDB.moneyDao().getOneUpperCategory(catId)
+            var timeFrom = calendarBox.timeInMillis
+            var timeTo = calendarBox2.timeInMillis
+
+            if (cal1Set == 0)
+                timeFrom = 0
+            if (cal2Set == 0)
+                timeTo = 9999999999999
+            if (timeFrom > timeTo)
+                //Toast.makeText(MainActivity(),"Bledny zakres dat", Toast.LENGTH_SHORT).show()
+            else {
+                var catUpper: Int? = null
+                if (categoryArrayyList.size > 0) {
+                    val catId = categoryArrayyList[0].id
+                    catUpper = moneyDB.moneyDao().getOneUpperCategory(catId)
+                }
+
+                val fragment = HomeFragment(catUpper, timeFrom, timeTo)
+                val transaction = fragmentManager?.beginTransaction()
+                transaction?.replace(R.id.fragment_container, fragment)?.commit()
             }
-            val fragment = HomeFragment(catUpper)
-            val transaction = fragmentManager?.beginTransaction()
-            transaction?.replace(R.id.fragment_container, fragment)?.commit()
         }
 
 
