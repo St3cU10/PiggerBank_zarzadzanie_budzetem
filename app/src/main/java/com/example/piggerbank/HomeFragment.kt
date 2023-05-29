@@ -19,7 +19,9 @@ import java.util.Calendar
 import java.util.Date
 
 
-class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
+class HomeFragment(val upperIdInitialize : Int? = null,
+                   val dateFrom :Long? = 0,
+                   val dateTo : Long? = 9999999999999) : Fragment() {
 
     private lateinit var moneyDB: MoneyDB
     private lateinit var categoriesList: List<String>
@@ -70,7 +72,7 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
         moneyDB = MoneyDB.getInstance(MainActivity())
 
             // RECYCLER VIEW
-        moneyInitialize(upperIdInitialize)
+        moneyInitialize(upperIdInitialize, dateFrom, dateTo)
         val layoutManager = LinearLayoutManager(context)
         recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.layoutManager = layoutManager
@@ -90,11 +92,11 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
 
             var bilans = 0.0
             for (i in przychodyList) {
-                bilans += moneyDB.moneyDao().getSumValueWhereCat(i)
+                bilans += moneyDB.moneyDao().getSumValueWhereCatAndDate(i, dateFrom, dateTo)
             }
 
             for (i in wydatkiList){
-                bilans -= moneyDB.moneyDao().getSumValueWhereCat(i)
+                bilans -= moneyDB.moneyDao().getSumValueWhereCatAndDate(i, dateFrom, dateTo)
             }
 
             money.text = bilans.toString()
@@ -218,7 +220,7 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
 
     // MONEY INITIALIZE Z PARAMETREM GDZIE BEDZIE CATEGORY CO KLIKNIEMY I WYSWIETLA PO UPPER CATEGORY
     // UPPER CATEGORY = CATEGORY W PARAMETRZE ( DOMYSLNIE NULL )
-    private fun moneyInitialize(upperId: Int?){
+    private fun moneyInitialize(upperId: Int?, dateFrom: Long?, dateTo: Long?){
 
         moneyArrayList = arrayListOf<MoneyRV>()
 
@@ -226,7 +228,7 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
             "Lipiec", "Sierpień", "Wrzesień", "Październik", "Listopad", "Grudzień")
 
         if(upperId == null) {
-            moneyRV = moneyDB.moneyDao().getAllMoney()
+            moneyRV = moneyDB.moneyDao().getAllMoneyWhereDate(dateFrom, dateTo)
 
             // STARE POBIERANIE KASY
         /*
@@ -247,10 +249,12 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
                 val id = moneyDB.moneyDao().getId(cat)
                 if(id != null) {
                     if(this::moneyRV.isInitialized) {
-                        moneyRV = moneyRV + moneyDB.moneyDao().getAllMoneyWhereCategory(id)
+                        moneyRV = moneyRV + moneyDB.moneyDao().
+                        getAllMoneyWhereCategoryAndDate(id, dateFrom, dateTo)
                     }
                     else{
-                        moneyRV = moneyDB.moneyDao().getAllMoneyWhereCategory(id)
+                        moneyRV = moneyDB.moneyDao().
+                        getAllMoneyWhereCategoryAndDate(id, dateFrom, dateTo)
 
                     }
                 }
