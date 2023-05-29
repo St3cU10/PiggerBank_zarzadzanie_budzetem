@@ -83,15 +83,31 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
         suma = view.findViewById(R.id.textvievsuma)
         if(upperIdInitialize == null)
         {
-            money.visibility = View.GONE
-            suma.visibility = View.GONE
-        }
-        var suma = 0.0
-        for (money in moneyArrayList) {
-            suma += money.value
-        }
+            val przychodyList = arrayListOf(1)
+            val wydatkiList = arrayListOf(2)
+            categoryIdList(1, 0, przychodyList)
+            categoryIdList(2, 0, wydatkiList)
 
-        money.text = suma.toString()
+            var bilans = 0.0
+            for (i in przychodyList) {
+                bilans += moneyDB.moneyDao().getSumValueWhereCat(i)
+            }
+
+            for (i in wydatkiList){
+                bilans -= moneyDB.moneyDao().getSumValueWhereCat(i)
+            }
+
+            money.text = bilans.toString()
+            suma.text = "Bilans: "
+
+        }
+        else {
+            var suma = 0.0
+            for (money in moneyArrayList) {
+                suma += money.value
+            }
+            money.text = suma.toString()
+        }
 
 
 
@@ -313,6 +329,20 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
             categoryList(id, 0, catList)
         }
         categoryList(upperId, offset = offset+1, catList)
+
+    }
+
+    private fun categoryIdList(upperId: Int, offset: Int, catList: java.util.ArrayList<Int>) {
+        val cat = moneyDB.moneyDao().getCategoryDownList(upperId, offset)
+        if (cat == null)
+            return
+
+        catList.add(moneyDB.moneyDao().getCategoryIdDownList(upperId, offset))
+        val id = moneyDB.moneyDao().getId(cat)
+        if (id != null) {
+            categoryIdList(id, 0, catList)
+        }
+        categoryIdList(upperId, offset = offset+1, catList)
 
     }
 

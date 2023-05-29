@@ -137,6 +137,12 @@ interface MoneyDao {
     @Query("SELECT categoryName FROM Category WHERE upperCategory LIKE :upper LIMIT 1 OFFSET :offset")
     fun getCategoryDownList(upper : Int, offset : Int) : String
 
+    @Query("SELECT id FROM Category WHERE upperCategory LIKE :upper LIMIT 1 OFFSET :offset")
+    fun getCategoryIdDownList(upper : Int, offset : Int) : Int
+
+    // SUMOWANIE KWOTY DLA DANEJ KATEGORII
+    @Query("SELECT SUM(moneyValue) FROM Money WHERE moneyCategory_id LIKE :cat")
+    fun getSumValueWhereCat(cat : Int) : Float
 
     /*
     @Query("SELECT m.id, m.moneyValue, m.moneyDescription, m.moneyDate, c.categoryName FROM Money m " +
