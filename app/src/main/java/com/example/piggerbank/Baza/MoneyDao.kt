@@ -144,6 +144,9 @@ interface MoneyDao {
     @Query("SELECT SUM(moneyValue) FROM Money WHERE moneyCategory_id LIKE :cat")
     fun getSumValueWhereCat(cat : Int) : Float
 
+    @Query("SELECT Count(id) From Category")
+    fun getNumberOfCategories() : Int
+
     /*
     @Query("SELECT m.id, m.moneyValue, m.moneyDescription, m.moneyDate, c.categoryName FROM Money m " +
             "JOIN Category c ON m.moneyCategory_id = c.id WHERE moneyCategory_id LIKE :catId")

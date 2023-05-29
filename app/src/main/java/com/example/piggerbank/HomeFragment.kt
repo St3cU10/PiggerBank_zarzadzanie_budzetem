@@ -318,7 +318,7 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
 
     }
 
-    private fun categoryList(upperId: Int, offset: Int, catList: java.util.ArrayList<String>) {
+    fun categoryList(upperId: Int, offset: Int, catList: java.util.ArrayList<String>) {
         val cat = moneyDB.moneyDao().getCategoryDownList(upperId, offset)
         if (cat == null)
             return
@@ -332,7 +332,7 @@ class HomeFragment(val upperIdInitialize : Int? = null) : Fragment() {
 
     }
 
-    private fun categoryIdList(upperId: Int, offset: Int, catList: java.util.ArrayList<Int>) {
+    fun categoryIdList(upperId: Int, offset: Int, catList: java.util.ArrayList<Int>) {
         val cat = moneyDB.moneyDao().getCategoryDownList(upperId, offset)
         if (cat == null)
             return
