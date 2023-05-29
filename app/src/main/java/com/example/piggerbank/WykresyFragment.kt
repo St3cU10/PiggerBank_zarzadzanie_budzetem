@@ -6,28 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import com.db.williamchart.view.BarChartView
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [WykresyFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class WykresyFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
@@ -35,33 +23,74 @@ class WykresyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_wykresy, container, false)
+        val wykresprzychody : BarChartView = view.findViewById(R.id.barChart)
+        val wykreswydatki : BarChartView = view.findViewById(R.id.barChart2)
 
-        val prevBtn : ImageButton = view.findViewById(R.id.back_button2)
+
+        wykresprzychody.animate(SetPrzychody)
+
+        wykreswydatki.animate(SetWydatki)
+
+
+        /*val prevBtn : ImageButton = view.findViewById(R.id.back_button2)
         prevBtn.setOnClickListener{
             val fragment = KategorieFragment()
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.fragment_container,fragment)?.commit()
-        }
+        }*/
         return view
     }
 
+
+
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment WykresyFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            WykresyFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+
+        private val SetPrzychody = listOf(
+            "JAN" to 4F,
+            "FEB" to 1F,
+            "MAR" to 2F,
+            "MAY" to 2.3F,
+            "APR" to 5F,
+            "JUN" to 4F
+        )
+
+        private val SetWydatki = listOf(
+            "JAN" to 4F,
+            "FEB" to 1F,
+            "MAR" to 2F,
+            "MAY" to 2.3F,
+            "APR" to 5F,
+            "JUN" to 4F
+        )
+
+        private const val animationDuration = 1000L
     }
 }
+
+
+
+
+
+
+
+
+/*class BarChartActivity : AppCompatActivity() {
+
+    private var _binding: ActivityBarChartBinding? = null
+    private val binding get() = _binding!!
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        _binding = ActivityBarChartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.apply {
+
+            barChart.animation.duration = animationDuration
+            barChart.animate(barSet)
+
+            barChartHorizontal.animation.duration = animationDuration
+            barChartHorizontal.animate(horizontalBarSet)
+
+        }
+    }*/
+
