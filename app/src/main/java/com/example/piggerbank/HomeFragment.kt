@@ -69,6 +69,14 @@ class HomeFragment(val upperIdInitialize : Int? = null,
             transaction?.replace(R.id.fragment_container,fragment)?.commit()
         }
 
+
+        val chartsBtn : ImageButton = view.findViewById(R.id.wykresy_button)
+        chartsBtn.setOnClickListener{
+            val fragment = WykresyFragment()
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(R.id.fragment_container,fragment)?.commit()
+        }
+
         moneyDB = MoneyDB.getInstance(MainActivity())
 
             // RECYCLER VIEW

@@ -42,7 +42,7 @@ class PrzypomnieniaFragment : Fragment() {
 
         val prevBtn : ImageButton = view.findViewById(R.id.back_button2)
         prevBtn.setOnClickListener{
-            val fragment = KategorieFragment()
+            val fragment = HomeFragment()
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.fragment_container,fragment)?.commit()
         }

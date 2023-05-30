@@ -38,7 +38,7 @@ class SkarbonkaFragment : Fragment() {
 
         val prevBtn : ImageButton = view.findViewById(R.id.back_button)
         prevBtn.setOnClickListener{
-            val fragment = KategorieFragment()
+            val fragment = HomeFragment()
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.fragment_container,fragment)?.commit()
         }

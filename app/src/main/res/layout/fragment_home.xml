@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -13,37 +12,63 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/card_view"
-        />
+        android:layout_height="610dp"
+        android:translationY="-20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textvievsuma"
+        app:layout_constraintTop_toBottomOf="@+id/addMoney"
+        tools:layout_editor_absoluteX="-89dp"
+        tools:listitem="@layout/card_view" />
+
 
     <Button
         android:id="@+id/addMoney"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dodaj kase"
+        android:layout_marginBottom="672dp"
         android:backgroundTint="@color/morski"
-        android:translationX="100dp"
-        android:translationY="-50dp"
-        app:layout_constraintBottom_toBottomOf="@+id/recycler_view"
+        android:text="Dodaj kase"
+        android:translationX="60dp"
+        android:translationY="-3dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textvievsuma"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
+        app:layout_constraintHorizontal_bias="0.674"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
         android:id="@+id/filters_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="672dp"
+        android:layout_marginBottom="648dp"
         android:background="#0D2840"
+        android:backgroundTint="@color/fiolet"
         android:contentDescription="cofnij do ekranu start"
-        android:backgroundTint="@color/czerwony"
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:src="@drawable/baseline_filter_alt_24"
+        android:translationX="-250dp"
+        android:translationY="-35dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.956"
+        app:layout_constraintHorizontal_bias="0.609"
+        app:layout_constraintStart_toEndOf="@+id/wykresy_button"
+        tools:ignore="MissingConstraints" />
+
+    <ImageButton
+        android:id="@+id/wykresy_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="648dp"
+        android:background="#0D2840"
+        android:backgroundTint="@color/fiolet"
+        android:contentDescription="cofnij do ekranu start"
+        android:minWidth="48dp"
+        android:minHeight="48dp"
+        android:src="@drawable/baseline_bar_chart_24"
+        android:translationX="-250dp"
+        android:translationY="-35dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.754"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
 
@@ -53,6 +78,7 @@
         android:layout_height="41dp"
         android:layout_marginBottom="8dp"
         android:background="#0D2840"
+        android:translationX="90dp"
         android:text="   Suma:                "
         android:textColor="#FFFFFF"
         android:textSize="24sp"
@@ -67,6 +93,8 @@
         android:layout_height="40dp"
         android:layout_marginBottom="8dp"
         android:text="TextView"
+        android:translationX="45dp"
+        android:translationY="-2dp"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"

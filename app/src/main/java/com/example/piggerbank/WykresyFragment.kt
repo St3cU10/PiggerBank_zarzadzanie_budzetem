@@ -20,6 +20,15 @@ class WykresyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_wykresy, container, false)
+
+        //przycisk cofania
+
+        val prevBtn : ImageButton = view.findViewById(R.id.back_button)
+        prevBtn.setOnClickListener{
+            val fragment = HomeFragment()
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(R.id.fragment_container,fragment)?.commit()
+        }
         moneyDB = MoneyDB.getInstance(MainActivity())
 
         val wykresprzychody : BarChartView = view.findViewById(R.id.barChart2)
