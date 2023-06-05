@@ -6,13 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.AutoCompleteTextView
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.Toast
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.piggerbank.Baza.Category
@@ -57,6 +51,14 @@ class KategorieFragment : Fragment() {
         val nextBtn : Button = view.findViewById(R.id.addCategory)
         nextBtn.setOnClickListener{
             val fragment = AddCategoryFragment()
+            val transaction = fragmentManager?.beginTransaction()
+            transaction?.replace(R.id.fragment_container,fragment)?.commit()
+        }
+
+
+        val prevBtn : ImageButton = view.findViewById(R.id.back_button)
+        prevBtn.setOnClickListener{
+            val fragment = HomeFragment()
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.fragment_container,fragment)?.commit()
         }

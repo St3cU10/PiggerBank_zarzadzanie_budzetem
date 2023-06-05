@@ -10,98 +10,120 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_category"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/card_view_category"
-        />
-
-    <Button
-        android:id="@+id/addCategory"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Dodaj kategorie"
-        android:backgroundTint="@color/morski"
-        android:translationX="100dp"
-        android:translationY="-50dp"
-        app:layout_constraintBottom_toBottomOf="@+id/recycler_view_category"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.49"
-        app:layout_constraintStart_toStartOf="parent" />
-<!--STARE DZIALA
-    <TextView
-        android:id="@+id/header_textview"
-        android:layout_width="match_parent"
-        android:layout_height="86dp"
-        android:background="#202359"
-        android:gravity="center"
-        android:text="Kategorie"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        tools:ignore="MissingConstraints" />
-
-
-    <EditText
-        android:id="@+id/category_edittext"
-        android:layout_width="270dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="86dp"
-        android:autofillHints=""
-        android:hint="wpisz kategorie"
-        android:inputType="text"
-        android:textColorHint="#FFFFFF"
+        android:layout_height="665dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/header_textview"
-        app:layout_constraintVertical_bias="0.207" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textInputLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/category_edittext"
-        tools:layout_editor_absoluteX="-1dp">
-
-        <AutoCompleteTextView
-            android:id="@+id/auto_complete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Kategoria nadrzedna"
-            android:inputType="none"
-            tools:layout_editor_absoluteX="16dp"
-            tools:layout_editor_absoluteY="207dp" />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#50D4F2"
-        android:text="zatwierdź"
-
-        android:textColor="#000000"
-        app:layout_constraintBottom_toBottomOf="parent"
-
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
-        tools:ignore="MissingConstraints" />
-
-
-
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="16dp"
+        tools:listitem="@layout/card_view_category" />
 
     <ImageButton
         android:id="@+id/back_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
         android:background="#0D2840"
         android:contentDescription="cofnij do ekranu start"
         android:minWidth="48dp"
         android:minHeight="48dp"
         android:src="@drawable/back_arrow"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="293dp"
-        tools:layout_editor_absoluteY="619dp" />
--->
+        android:translationX="20dp"
+        android:translationY="-10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.801"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:id="@+id/addCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:backgroundTint="@color/morski"
+        android:text="Dodaj kategorie"
+        android:translationX="20dp"
+        android:translationY="-20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+    <!--STARE DZIALA
+        <TextView
+            android:id="@+id/header_textview"
+            android:layout_width="match_parent"
+            android:layout_height="86dp"
+            android:background="#202359"
+            android:gravity="center"
+            android:text="Kategorie"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            tools:ignore="MissingConstraints" />
+
+
+        <EditText
+            android:id="@+id/category_edittext"
+            android:layout_width="270dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="86dp"
+            android:autofillHints=""
+            android:hint="wpisz kategorie"
+            android:inputType="text"
+            android:textColorHint="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/header_textview"
+            app:layout_constraintVertical_bias="0.207" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/textInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/category_edittext"
+            tools:layout_editor_absoluteX="-1dp">
+
+            <AutoCompleteTextView
+                android:id="@+id/auto_complete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Kategoria nadrzedna"
+                android:inputType="none"
+                tools:layout_editor_absoluteX="16dp"
+                tools:layout_editor_absoluteY="207dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#50D4F2"
+            android:text="zatwierdź"
+
+            android:textColor="#000000"
+            app:layout_constraintBottom_toBottomOf="parent"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+            tools:ignore="MissingConstraints" />
+
+
+
+
+        <ImageButton
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#0D2840"
+            android:contentDescription="cofnij do ekranu start"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:src="@drawable/back_arrow"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="293dp"
+            tools:layout_editor_absoluteY="619dp" />
+    -->
 </androidx.constraintlayout.widget.ConstraintLayout>
