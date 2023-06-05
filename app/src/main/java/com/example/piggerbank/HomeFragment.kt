@@ -72,7 +72,7 @@ class HomeFragment(val upperIdInitialize : Int? = null,
 
         val chartsBtn : ImageButton = view.findViewById(R.id.wykresy_button)
         chartsBtn.setOnClickListener{
-            val fragment = WykresyFragment()
+            val fragment = WykresyFragment(dateFrom, dateTo)
             val transaction = fragmentManager?.beginTransaction()
             transaction?.replace(R.id.fragment_container,fragment)?.commit()
         }

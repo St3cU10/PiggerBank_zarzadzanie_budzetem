@@ -1,5 +1,6 @@
 package com.example.piggerbank
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +10,12 @@ import android.widget.ImageButton
 import android.widget.TextView
 import com.db.williamchart.view.BarChartView
 import com.example.piggerbank.Baza.MoneyDB
+import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
+import java.util.*
+import kotlin.collections.ArrayList
 
 class WykresyFragment(val dateFrom :Long? = 0,
                       val dateTo : Long? = 9999999999999) : Fragment() {
@@ -36,6 +43,32 @@ class WykresyFragment(val dateFrom :Long? = 0,
         val wykreswydatki : BarChartView = view.findViewById(R.id.barChart)
         val przychodyText : TextView = view.findViewById(R.id.tvChartName2)
         val wydatkiText : TextView = view.findViewById(R.id.tvChartName)
+        val dataOd : TextView = view.findViewById(R.id.dateFrom)
+        val dataDo : TextView = view.findViewById(R.id.dateTo)
+
+        val dateFormat = "dd-MM-yyyy"
+        val simple = SimpleDateFormat(dateFormat, Locale.UK)
+        if(dateFrom == 0L)
+            dataOd.visibility = View.GONE
+        else{
+            val calendar = Calendar.getInstance()
+            if (dateFrom != null) {
+                calendar.timeInMillis = dateFrom
+            }
+            dataOd.setText("Od: " + calendar.get(Calendar.DAY_OF_MONTH) + "-" +
+                    (calendar.get(Calendar.MONTH)+1) + "-" + calendar.get(Calendar.YEAR))
+        }
+
+        if(dateTo ==9999999999999L)
+            dataDo.visibility = View.GONE
+        else{
+            val calendar = Calendar.getInstance()
+            if (dateTo != null) {
+                calendar.timeInMillis = dateTo
+            }
+            dataDo.setText("Do: " + calendar.get(Calendar.DAY_OF_MONTH) + "-" +
+                    (calendar.get(Calendar.MONTH)+1) + "-" + calendar.get(Calendar.YEAR))
+        }
 
 
         val SetPrzychody = ArrayList<Pair<String, Float>>()
@@ -47,7 +80,7 @@ class WykresyFragment(val dateFrom :Long? = 0,
         val wydatkiList = arrayListOf(2)
         categoryIdList(1, 0, przychodyList)
         categoryIdList(2, 0, wydatkiList)
-
+/*
         if(przychodyList.size == 1 || moneyDB.moneyDao().getSumValueWhereCat(1) == 0F){
             wykresprzychody.visibility = View.GONE
             przychodyText.text = "Brak przychodów do porównania"
@@ -56,7 +89,7 @@ class WykresyFragment(val dateFrom :Long? = 0,
             wykreswydatki.visibility = View.GONE
             wydatkiText.text = "Brak wydatków do porównania"
         }
-
+*/
         for(i in przychodyList){
             val catList = arrayListOf(i)
             categoryIdList(i, 0, catList)
