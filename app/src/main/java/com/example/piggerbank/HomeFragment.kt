@@ -99,8 +99,17 @@ class HomeFragment(val upperIdInitialize : Int? = null,
                 bilans -= moneyDB.moneyDao().getSumValueWhereCatAndDate(i, dateFrom, dateTo)
             }
 
-            money.text = bilans.toString()
+           /* if (Math.floor(bilans * 100) % 100 == 0.0){
+                money.text = (Math.floor(bilans * 100) / 100) .toString()
+            }*/
+            if (Math.floor(bilans * 100) % 10 == 0.0){
+                money.text = (Math.floor(bilans * 100) / 100) .toString() + "0"
+            }
+            else{
+                money.text = (Math.floor(bilans * 100) / 100) .toString()
+            }
             suma.text = "Bilans: "
+            //Math.floor(bilans * 100)
 
         }
         else {

@@ -10,7 +10,8 @@ import android.widget.TextView
 import com.db.williamchart.view.BarChartView
 import com.example.piggerbank.Baza.MoneyDB
 
-class WykresyFragment : Fragment() {
+class WykresyFragment(val dateFrom :Long? = 0,
+                      val dateTo : Long? = 9999999999999) : Fragment() {
 
 
     private lateinit var moneyDB: MoneyDB
@@ -53,7 +54,7 @@ class WykresyFragment : Fragment() {
 
             var suma = 0.0
             for (j in catList){
-                suma += moneyDB.moneyDao().getSumValueWhereCat(j)
+                suma += moneyDB.moneyDao().getSumValueWhereCatAndDate(j, dateFrom, dateTo)
             }
             if(suma == 0.0)
                 continue
@@ -67,7 +68,7 @@ class WykresyFragment : Fragment() {
 
             var suma = 0.0
             for (j in catList){
-                suma += moneyDB.moneyDao().getSumValueWhereCat(j)
+                suma += moneyDB.moneyDao().getSumValueWhereCatAndDate(j, dateFrom, dateTo)
             }
 
             if(suma == 0.0)
